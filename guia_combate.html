@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guia Rápido de Combate — Catacumbas do Conde Vampiro</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #1a0f05; font-family: 'Crimson Text', serif; padding: 16px; }
+  .page {
+    max-width: 860px;
+    margin: 0 auto;
+    background: #f5ecd7;
+    padding: 36px 40px;
+    border: 8px solid #7a0c12;
+    outline: 3px solid #c49a2a;
+    outline-offset: 4px;
+  }
+  .header {
+    text-align: center;
+    border-bottom: 3px double #7a0c12;
+    padding-bottom: 16px;
+    margin-bottom: 24px;
+  }
+  .header h1 { font-family: 'Cinzel Decorative', serif; font-size: 24px; color: #7a0c12; }
+  .header p { font-style: italic; color: #6b6055; margin-top: 6px; font-size: 15px; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 16px 0; }
+  .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin: 16px 0; }
+  .card {
+    background: #fff8ec;
+    border: 1.5px solid #c49a2a;
+    border-radius: 4px;
+    padding: 14px 16px;
+  }
+  .card h2 {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 14px;
+    color: #7a0c12;
+    margin-bottom: 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid #e8d8b8;
+  }
+  .card h3 {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #8b6914;
+    margin: 10px 0 6px;
+  }
+  .step-list { list-style: none; counter-reset: steps; }
+  .step-list li {
+    counter-increment: steps;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    padding: 6px 0;
+    border-bottom: 0.5px solid #f0e6cc;
+    font-size: 14px;
+    color: #3d2b10;
+    line-height: 1.5;
+  }
+  .step-list li::before {
+    content: counter(steps);
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 14px;
+    color: #7a0c12;
+    font-weight: 700;
+    min-width: 18px;
+    text-align: center;
+  }
+  .bullet-list { list-style: none; }
+  .bullet-list li {
+    padding: 5px 0;
+    border-bottom: 0.5px solid #f0e6cc;
+    font-size: 14px;
+    color: #3d2b10;
+    line-height: 1.5;
+    padding-left: 14px;
+    position: relative;
+  }
+  .bullet-list li::before { content: "▸"; position: absolute; left: 0; color: #7a0c12; }
+  .action-card {
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 8px 0;
+  }
+  .action-header {
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    padding: 8px 12px;
+    color: #f5ecd7;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .action-body { padding: 8px 12px; font-size: 13px; color: #3d2b10; background: #fff8ec; line-height: 1.6; }
+  .roll-formula {
+    display: inline-block;
+    background: #7a0c12;
+    color: #f5ecd7;
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    padding: 3px 8px;
+    border-radius: 2px;
+    margin: 2px 0;
+  }
+  .result-box {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin: 8px 0;
+  }
+  .result-item {
+    background: #fff8ec;
+    border-left: 3px solid;
+    padding: 6px 10px;
+    font-size: 13px;
+    color: #3d2b10;
+    line-height: 1.5;
+  }
+  .result-item.success { border-color: #1e5020; }
+  .result-item.fail { border-color: #7a0c12; }
+  .result-item .result-label { font-family: 'Cinzel', serif; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; }
+  .result-item.success .result-label { color: #1e5020; }
+  .result-item.fail .result-label { color: #7a0c12; }
+  .highlight-box {
+    background: rgba(122,12,18,0.08);
+    border: 1.5px dashed #7a0c12;
+    border-radius: 4px;
+    padding: 12px 14px;
+    margin: 10px 0;
+    font-size: 14px;
+    color: #1a0f00;
+    line-height: 1.7;
+  }
+  .highlight-box strong { color: #7a0c12; font-family: 'Cinzel', serif; font-size: 12px; }
+  .conditions-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin: 8px 0; }
+  .cond-item { background: #fff8ec; border: 1px solid #e8d8b8; border-radius: 3px; padding: 6px 8px; }
+  .cond-name { font-family: 'Cinzel', serif; font-size: 11px; color: #7a0c12; text-transform: uppercase; letter-spacing: 1px; }
+  .cond-desc { font-size: 12px; color: #3d2b10; margin-top: 2px; line-height: 1.4; }
+  .items-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .items-table th { font-family: 'Cinzel', serif; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; background: #3d1a00; color: #f5ecd7; padding: 6px 8px; text-align: left; }
+  .items-table td { padding: 6px 8px; border-bottom: 0.5px solid #e8d8b8; color: #3d2b10; }
+  .items-table tr:nth-child(even) td { background: rgba(139,105,20,0.06); }
+  .section-divider { border: none; border-top: 2px double #c49a2a; margin: 24px 0; opacity: 0.6; }
+  .initiative-track {
+    display: flex;
+    gap: 0;
+    margin: 12px 0;
+    border: 1.5px solid #c49a2a;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .init-step {
+    flex: 1;
+    text-align: center;
+    padding: 10px 6px;
+    border-right: 1px solid #e8d8b8;
+    font-size: 12px;
+    color: #3d2b10;
+  }
+  .init-step:last-child { border-right: none; }
+  .init-step .is-num { font-family: 'Cinzel Decorative', serif; font-size: 18px; color: #7a0c12; }
+  .init-step .is-label { font-family: 'Cinzel', serif; font-size: 9px; text-transform: uppercase; letter-spacing: 1px; color: #6b6055; margin-top: 2px; }
+  .checkpoint-box {
+    background: #7a0c12;
+    color: #f5ecd7;
+    border-radius: 4px;
+    padding: 14px 16px;
+    margin: 10px 0;
+  }
+  .checkpoint-box h3 { font-family: 'Cinzel', serif; font-size: 12px; letter-spacing: 2px; color: rgba(245,236,215,0.7); margin-bottom: 6px; }
+  .checkpoint-box p { font-size: 14px; line-height: 1.6; }
+  .ornament { text-align: center; color: #8b6914; font-size: 18px; letter-spacing: 8px; margin: 8px 0; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <div class="ornament">⚔ ☠ ⚔</div>
+    <h1>Guia Rápido de Combate</h1>
+    <p>Motor simplificado para 2 jogadores · Catacumbas do Conde Vampiro</p>
+  </div>
+
+  <!-- INICIATIVA E ORDEM -->
+  <div class="card" style="margin-bottom: 16px;">
+    <h2>🎲 Fase 1 — Iniciativa</h2>
+    <p style="font-size:14px; color:#3d2b10; margin-bottom: 10px;">No início de cada combate, cada participante rola para determinar a ordem de atuação.</p>
+    <div class="highlight-box">
+      <strong>Fórmula:</strong> Role 1d20 + modificador de DES de cada herói e de cada grupo de monstros. O maior vai primeiro. Em empate, heróis têm prioridade.
+    </div>
+    <div class="initiative-track">
+      <div class="init-step"><div class="is-num">1</div><div class="is-label">Rolar 1d20+DES</div></div>
+      <div class="init-step"><div class="is-num">2</div><div class="is-label">Ordenar do maior ao menor</div></div>
+      <div class="init-step"><div class="is-num">3</div><div class="is-label">Anotar a ordem</div></div>
+      <div class="init-step"><div class="is-num">4</div><div class="is-label">Manter até o fim</div></div>
+    </div>
+  </div>
+
+  <!-- TURNO DO HERÓI -->
+  <div class="two-col">
+    <div class="card">
+      <h2>🏃 Fase 2 — Seu Turno</h2>
+      <p style="font-size:13px; color:#6b6055; margin-bottom:8px; font-style:italic;">Em cada turno você pode fazer AMBOS:</p>
+      <div class="action-card">
+        <div class="action-header" style="background: #1e5020;">🏃 MOVIMENTO</div>
+        <div class="action-body">Mova-se até sua velocidade (geralmente 30 ft = 9 metros). Pode dividir antes e depois da ação.</div>
+      </div>
+      <div class="action-card">
+        <div class="action-header" style="background: #3d1a00;">⚡ 1 AÇÃO</div>
+        <div class="action-body">Escolha UMA das 3 ações abaixo.</div>
+      </div>
+      <div class="action-card" style="margin-top:6px;">
+        <div class="action-header" style="background: #143c78;">✨ BÔNUS (se disponível)</div>
+        <div class="action-body">Certas habilidades dão uma ação bônus adicional (ex: Cunning Action do Ladino, Healing Word do Clérigo).</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>⚔️ As 3 Ações Possíveis</h2>
+
+      <div class="action-card" style="margin-bottom: 8px;">
+        <div class="action-header" style="background: #7a0c12;">⚔ ATACAR</div>
+        <div class="action-body">
+          Role: <span class="roll-formula">1d20 + bônus</span><br>
+          Se ≥ CA do inimigo: acertou!<br>
+          Role o dado de dano + mod e subtraia dos PV do inimigo.
+        </div>
+      </div>
+
+      <div class="action-card" style="margin-bottom: 8px;">
+        <div class="action-header" style="background: #1e5020;">🛡 DESVIAR</div>
+        <div class="action-body">
+          Sem rolagem. Até seu próximo turno: ataques contra você têm <strong>Desvantagem</strong>. Você faz saving throws de DES com <strong>Vantagem</strong>.
+        </div>
+      </div>
+
+      <div class="action-card">
+        <div class="action-header" style="background: #143c78;">✨ ESPECIAL</div>
+        <div class="action-body">
+          Use habilidade de classe, magia, item ou AJUDA (veja abaixo). Efeito varia por habilidade.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AJUDA COOPERATIVA -->
+  <div class="checkpoint-box">
+    <h3>🤝 AÇÃO DE AJUDA — O Segredo do Cooperativo</h3>
+    <p>Use sua ação para ajudar seu parceiro. O próximo ataque do parceiro contra um inimigo a 1,5m de você é feito com <strong>VANTAGEM</strong> (role 2d20, use o maior). Esta é a ação mais poderosa para duplas!</p>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- ATAQUE DETALHADO -->
+  <div class="card" style="margin-bottom: 16px;">
+    <h2>🎯 Como Fazer um Ataque — Passo a Passo</h2>
+    <ol class="step-list">
+      <li>Escolha um alvo dentro do alcance da sua arma ou feitiço</li>
+      <li>Role <span class="roll-formula">1d20</span> e some seu bônus de ataque (na ficha)</li>
+      <li>Compare com a Classe de Armadura (CA) do inimigo — veja o Bestiário</li>
+      <li>Se o total ≥ CA: ACERTOU. Role o dado de dano da arma e some o modificador</li>
+      <li>Subtraia o dano dos PV do inimigo. Se chegar a 0: inimigo derrotado!</li>
+    </ol>
+    <div class="two-col" style="margin-top: 12px;">
+      <div class="result-item success"><div class="result-label">✅ Acerto Crítico (20 natural)</div>Role o dado de dano em DOBRO! Ex: 1d8 → 2d8. Aplica modificador uma vez.</div>
+      <div class="result-item fail"><div class="result-label">❌ Falha Crítica (1 natural)</div>Erra automaticamente. Sem importar bônus ou CA do alvo.</div>
+    </div>
+  </div>
+
+  <!-- VANTAGEM E DESVANTAGEM -->
+  <div class="two-col">
+    <div class="card">
+      <h2>🎲 Vantagem</h2>
+      <p style="font-size:14px; color:#3d2b10; margin-bottom:8px;">Role <strong>2d20</strong> e use o <strong>MAIOR</strong>.</p>
+      <ul class="bullet-list">
+        <li>Atacar um alvo deitado (prone) a ≤ 1,5m</li>
+        <li>Alvo está invisível ou você está oculto</li>
+        <li>Parceiro usou Ação de Ajuda</li>
+        <li>Efeito de feitiço (Bless, etc.)</li>
+        <li>Atacar por trás (flanco)</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h2>🎲 Desvantagem</h2>
+      <p style="font-size:14px; color:#3d2b10; margin-bottom:8px;">Role <strong>2d20</strong> e use o <strong>MENOR</strong>.</p>
+      <ul class="bullet-list">
+        <li>Atacante à distância com inimigo a 1,5m</li>
+        <li>Alvo tem cobertura parcial ou total</li>
+        <li>Você está Prone</li>
+        <li>Você está Envenenado ou Assustado</li>
+        <li>Névoa ou escuridão (sem darkvision)</li>
+      </ul>
+    </div>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- MONSTROS ATACANDO -->
+  <div class="card" style="margin-bottom: 16px;">
+    <h2>👾 Fase 3 — Os Monstros Atacam</h2>
+    <p style="font-size:14px; color:#3d2b10; margin-bottom: 10px;">Sem Mestre, os monstros agem assim:</p>
+    <ol class="step-list">
+      <li>Cada grupo de monstros idênticos age ao mesmo tempo</li>
+      <li>Para alvo: role 1d6 — 1-3 ataca Herói 1, 4-6 ataca Herói 2 (ou o mais próximo)</li>
+      <li>Role o ataque do monstro: 1d20 + bônus do monstro (veja Bestiário)</li>
+      <li>Se ≥ CA do herói: acertou. Role dano e subtraia dos PV do herói</li>
+      <li>Monstros inteligentes (Vampiros) miram o herói com menos PV</li>
+    </ol>
+    <div class="highlight-box">
+      <strong>Monstros que fogem:</strong> Se um monstro de PV baixo estiver com 25% ou menos de PV, role 1d6 ao final de seu turno: em 1-2, ele tenta fugir ou recuar. Vampiros recuam para regenerar!
+    </div>
+  </div>
+
+  <!-- DESCANSO -->
+  <div class="two-col">
+    <div class="card">
+      <h2>😴 Descanso Curto</h2>
+      <div class="highlight-box" style="margin: 0;">
+        <strong>Quando:</strong> Sala limpa (sem inimigos vivos)<br>
+        <strong>Duração:</strong> 1 hora (= 1 turno de jornada)<br>
+        <strong>Como:</strong> Role 1 ou 2 Dados de Vida + CON mod. Recupere esses PV.<br>
+        <strong>Limite:</strong> 2 Dados de Vida por Descanso Curto. Dados gastos ficam indisponíveis até Descanso Longo.<br>
+        <strong>Magias:</strong> Não restaura slots de magia.
+      </div>
+    </div>
+    <div class="card">
+      <h2>🛏️ Descanso Longo</h2>
+      <div class="highlight-box" style="margin: 0;">
+        <strong>Quando:</strong> Somente em sala SEGURA 🔵 (Entrada)<br>
+        <strong>Duração:</strong> 8 horas (= 3 turnos de jornada)<br>
+        <strong>Como:</strong> Recupera TODOS os PV + metade dos Dados de Vida gastos + todos os slots de magia.<br>
+        <strong>Limite:</strong> 1× por aventura inteira!<br>
+        <strong>⚠️ Cuidado com o limite de 18 turnos da vela!
+      </div>
+    </div>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- CONDIÇÕES -->
+  <div class="card" style="margin-bottom: 16px;">
+    <h2>⚠️ Condições Importantes</h2>
+    <div class="conditions-grid">
+      <div class="cond-item">
+        <div class="cond-name">💀 Paralisado</div>
+        <div class="cond-desc">Não pode agir. Ataques contra você têm vantagem. Ataques a ≤1,5m são críticos automáticos. Salvo CON ao final de cada turno para sair.</div>
+      </div>
+      <div class="cond-item">
+        <div class="cond-name">😰 Assustado</div>
+        <div class="cond-desc">Desvantagem em ataques e testes enquanto a fonte do medo for visível. Não pode se aproximar voluntariamente.</div>
+      </div>
+      <div class="cond-item">
+        <div class="cond-name">🤢 Envenenado</div>
+        <div class="cond-desc">Desvantagem em ataques e testes de habilidade. Dura até ser curado ou o veneno acabar.</div>
+      </div>
+      <div class="cond-item">
+        <div class="cond-name">🛌 Prone (Caído)</div>
+        <div class="cond-desc">Desvantagem em ataques. Ataques contra você a ≤1,5m têm vantagem (à distância têm desvantagem). Levantar custa metade do movimento.</div>
+      </div>
+      <div class="cond-item">
+        <div class="cond-name">🔒 Agarrado</div>
+        <div class="cond-desc">Velocidade 0. Libertar: role Atletismo ou Acrobacia oposta ao Atletismo do agarrador.</div>
+      </div>
+      <div class="cond-item">
+        <div class="cond-name">😵 0 PV</div>
+        <div class="cond-desc">Cai inconsciente. Deve rolar Saving Throws de Morte. 3 sucessos = estável. 3 falhas = morto. 20 natural = volta com 1 PV!</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ITENS RÁPIDO -->
+  <div class="card" style="margin-bottom: 16px;">
+    <h2>🧪 Itens — Referência Rápida</h2>
+    <table class="items-table">
+      <tr><th>Item</th><th>Ação</th><th>Efeito</th></tr>
+      <tr><td>Poção de Cura</td><td>Ação ou Bônus</td><td>2d4+2 PV (em você ou aliado adjacente)</td></tr>
+      <tr><td>Poção de Cura Superior</td><td>Ação ou Bônus</td><td>4d4+4 PV</td></tr>
+      <tr><td>Óleo Sagrado</td><td>Bônus</td><td>Próximo ataque +1d6 vs mortos-vivos</td></tr>
+      <tr><td>Ácido Corrosivo</td><td>Ação (arremesso 6m)</td><td>2d6 ácido ao acertar</td></tr>
+      <tr><td>Pó do Sono</td><td>Ação (área 3m)</td><td>CON DC 13 ou dorme 1 min</td></tr>
+      <tr><td>Antídoto</td><td>Ação</td><td>Cura condição Envenenado</td></tr>
+      <tr><td>Tocha</td><td>Ação Bônus (acender)</td><td>Luz brilhante 6m, tênue +6m. Ataque: 1 fogo</td></tr>
+      <tr><td>Elixir de Resistência</td><td>Ação</td><td>Resistência a 1 tipo de dano por 1h</td></tr>
+    </table>
+    <div class="highlight-box" style="margin-top: 10px;">
+      <strong>Resistência:</strong> Quando uma criatura tem resistência a um tipo de dano, esse dano é dividido pela METADE (arredonde para baixo).
+    </div>
+  </div>
+
+  <!-- MORTE E SAVING THROWS -->
+  <div class="card" style="margin-bottom: 16px;">
+    <h2>💀 0 PV — Saving Throws de Morte</h2>
+    <ol class="step-list">
+      <li>No início do seu turno, role 1d20 (sem modificadores)</li>
+      <li>10 ou mais = 1 sucesso. Abaixo de 10 = 1 falha. 3 sucessos = estável. 3 falhas = morte.</li>
+      <li>20 natural = volta com 1 PV imediatamente!</li>
+      <li>1 natural = conta como 2 falhas</li>
+      <li>Qualquer dano enquanto a 0 PV = 1 falha (crítico = 2 falhas)</li>
+    </ol>
+    <div class="two-col" style="margin-top: 10px;">
+      <div class="result-item success">
+        <div class="result-label">✅ Parceiro pode ajudar</div>
+        Usar Medicina DC 10 (ação) para estabilizar. Poção funciona se for dada como ação. Healing Word do Clérigo salva à distância!
+      </div>
+      <div class="result-item fail">
+        <div class="result-label">⚠️ Atenção cooperativa</div>
+        Se um herói cair, o parceiro DEVE decidir: continuar lutando ou ajudar. Prioridade: 1. Estabilize. 2. Continue. Nunca abandone o parceiro!
+      </div>
+    </div>
+  </div>
+
+  <!-- RESUMO DE TURNO -->
+  <div class="checkpoint-box">
+    <h3>📋 CHECKLIST DO TURNO</h3>
+    <p>
+      □ Anunciei minha iniciativa? &nbsp;&nbsp;
+      □ Me movi (até minha velocidade)?<br>
+      □ Tomei minha ação (Atacar/Desviar/Especial)?<br>
+      □ Usei minha ação bônus se disponível?<br>
+      □ Anotei os PV gastos (meus e dos inimigos)?<br>
+      □ Meu parceiro precisa de ajuda?
+    </p>
+  </div>
+
+  <div class="ornament" style="margin-top: 24px;">⚔ BOA SORTE NAS CATACUMBAS ⚔</div>
+
+</div>
+</body>
+</html>

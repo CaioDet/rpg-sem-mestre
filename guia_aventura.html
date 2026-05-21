@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>As Catacumbas do Conde Vampiro — Guia da Aventura</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --parch: #f5ecd7;
+    --parch-dark: #e8d8b8;
+    --ink: #1a0f00;
+    --ink-mid: #3d2b10;
+    --blood: #7a0c12;
+    --blood-light: #a01820;
+    --gold: #8b6914;
+    --gold-light: #c49a2a;
+    --stone: #6b6055;
+    --shadow: rgba(26,15,0,0.18);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #2a1a0a;
+    font-family: 'Crimson Text', serif;
+    color: var(--ink);
+    min-height: 100vh;
+  }
+  .page {
+    max-width: 900px;
+    margin: 0 auto;
+    background: var(--parch);
+    background-image: url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    min-height: 100vh;
+    padding: 48px 56px;
+    border-left: 8px solid var(--blood);
+    border-right: 8px solid var(--blood);
+  }
+  .cover-title {
+    text-align: center;
+    padding: 32px 0 24px;
+    border-bottom: 3px double var(--blood);
+    margin-bottom: 36px;
+  }
+  .cover-title h1 {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 28px;
+    color: var(--blood);
+    letter-spacing: 2px;
+    line-height: 1.3;
+    text-shadow: 1px 1px 0 var(--parch-dark);
+  }
+  .cover-title .subtitle {
+    font-family: 'Cinzel', serif;
+    font-size: 14px;
+    color: var(--gold);
+    letter-spacing: 4px;
+    margin-top: 8px;
+    text-transform: uppercase;
+  }
+  .ornament {
+    text-align: center;
+    color: var(--blood);
+    font-size: 22px;
+    margin: 12px 0;
+    letter-spacing: 8px;
+  }
+  h2 {
+    font-family: 'Cinzel', serif;
+    font-size: 18px;
+    color: var(--blood);
+    border-bottom: 1.5px solid var(--blood-light);
+    padding-bottom: 6px;
+    margin: 32px 0 14px;
+    letter-spacing: 1px;
+  }
+  h3 {
+    font-family: 'Cinzel', serif;
+    font-size: 14px;
+    color: var(--gold);
+    margin: 18px 0 8px;
+    letter-spacing: 1px;
+  }
+  h4 {
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    color: var(--ink-mid);
+    margin: 12px 0 6px;
+  }
+  p { font-size: 16px; line-height: 1.75; margin-bottom: 10px; color: var(--ink-mid); }
+  .intro-box {
+    background: rgba(122,12,18,0.07);
+    border-left: 4px solid var(--blood);
+    padding: 16px 20px;
+    margin: 20px 0;
+    font-style: italic;
+    font-size: 17px;
+    line-height: 1.8;
+  }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin: 16px 0; }
+  .info-box {
+    background: var(--parch-dark);
+    border: 1.5px solid var(--gold);
+    border-radius: 4px;
+    padding: 14px 16px;
+  }
+  .info-box .label {
+    font-family: 'Cinzel', serif;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--stone);
+    margin-bottom: 4px;
+  }
+  .info-box .value {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--blood);
+  }
+  table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 15px; }
+  th {
+    font-family: 'Cinzel', serif;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    background: var(--blood);
+    color: var(--parch);
+    padding: 8px 10px;
+    text-align: left;
+  }
+  td { padding: 8px 10px; border-bottom: 0.5px solid var(--parch-dark); color: var(--ink-mid); }
+  tr:nth-child(even) td { background: rgba(139,105,20,0.08); }
+  .room-block {
+    border: 1.5px solid var(--gold);
+    border-radius: 6px;
+    margin: 20px 0;
+    overflow: hidden;
+  }
+  .room-header {
+    background: var(--blood);
+    color: var(--parch);
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .room-number {
+    background: var(--parch);
+    color: var(--blood);
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    font-weight: 700;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .room-title { font-family: 'Cinzel', serif; font-size: 15px; }
+  .room-body { padding: 14px 16px; }
+  .room-tag {
+    display: inline-block;
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    padding: 3px 8px;
+    border-radius: 2px;
+    margin: 2px 3px 2px 0;
+  }
+  .tag-combat { background: rgba(122,12,18,0.15); color: var(--blood); border: 1px solid var(--blood-light); }
+  .tag-trap { background: rgba(139,105,20,0.15); color: var(--gold); border: 1px solid var(--gold); }
+  .tag-loot { background: rgba(107,96,85,0.15); color: var(--stone); border: 1px solid var(--stone); }
+  .tag-npc { background: rgba(30,80,30,0.15); color: #1e5020; border: 1px solid #1e5020; }
+  .tag-safe { background: rgba(20,60,120,0.15); color: #143c78; border: 1px solid #143c78; }
+  .tag-boss { background: rgba(80,0,0,0.25); color: #500000; border: 1.5px solid #500000; font-weight: 700; }
+  .callout {
+    background: rgba(122,12,18,0.06);
+    border: 1px dashed var(--blood-light);
+    border-radius: 4px;
+    padding: 12px 14px;
+    margin: 10px 0;
+    font-size: 15px;
+  }
+  .callout strong { color: var(--blood); font-family: 'Cinzel', serif; font-size: 13px; }
+  ul { margin: 8px 0 10px 20px; }
+  li { margin-bottom: 5px; font-size: 15px; line-height: 1.6; color: var(--ink-mid); }
+  .xp-track {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin: 12px 0;
+  }
+  .xp-node {
+    border: 2px solid var(--blood);
+    border-radius: 4px;
+    padding: 8px 12px;
+    text-align: center;
+    min-width: 80px;
+    background: var(--parch-dark);
+  }
+  .xp-node .lvl { font-family: 'Cinzel', serif; font-size: 11px; color: var(--stone); }
+  .xp-node .xp-val { font-size: 18px; font-weight: 700; color: var(--blood); font-family: 'Cinzel', serif; }
+  .xp-arrow { color: var(--gold); font-size: 20px; }
+  .merchant-block {
+    border: 2px solid var(--gold);
+    border-radius: 6px;
+    padding: 16px;
+    margin: 16px 0;
+    background: rgba(139,105,20,0.06);
+  }
+  .merchant-name {
+    font-family: 'Cinzel', serif;
+    font-size: 15px;
+    color: var(--gold);
+    margin-bottom: 4px;
+  }
+  .separator {
+    border: none;
+    border-top: 2px double var(--blood);
+    margin: 36px 0;
+    opacity: 0.5;
+  }
+  .objective-box {
+    background: var(--blood);
+    color: var(--parch);
+    border-radius: 6px;
+    padding: 20px 24px;
+    margin: 24px 0;
+    text-align: center;
+  }
+  .objective-box h3 { color: var(--parch-dark); margin: 0 0 8px; font-size: 13px; letter-spacing: 3px; }
+  .objective-box p { color: var(--parch); font-size: 17px; margin: 0; }
+  @media print {
+    body { background: white; }
+    .page { border: none; padding: 24px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="cover-title">
+    <div class="ornament">✦ ✦ ✦</div>
+    <h1>As Catacumbas do<br>Conde Vampiro</h1>
+    <div class="subtitle">Aventura Cooperativa para 2 Jogadores · D&D 5e Starter Set</div>
+    <div class="ornament">⚔ ☠ ⚔</div>
+  </div>
+
+  <div class="intro-box">
+    "Dizem que nas profundezas abaixo do castelo em ruínas, o Conde Malachar dorme em seu caixão de obsidiana — esperando. Mas algo o mantém dormindo: o Coração de Sangue, um artefato antigo. Destrua-o e o Conde nunca mais despertará. Falhe... e o vale inteiro será seu festim eterno."
+  </div>
+
+  <div class="objective-box">
+    <h3>🎯 Objetivo da Aventura</h3>
+    <p>Explore a dungeon, suba para o Nível 3 e destrua o <strong>Coração de Sangue</strong> antes que a vela de 18 turnos de jornada se apague — ou o Conde Malachar desperta para sua forma máxima.</p>
+  </div>
+
+  <!-- REGRAS BÁSICAS -->
+  <h2>📜 Como Jogar (Modo Cooperativo)</h2>
+  <p>Esta aventura é jogada <strong>sem Mestre</strong>. Os dois jogadores controlam cada um um herói e, juntos, exploram o mapa, enfrentam monstros e tomam decisões. O "dungeon" narra a si mesmo: vocês leem a descrição da sala ao entrar.</p>
+
+  <div class="two-col">
+    <div class="info-box">
+      <div class="label">Jogadores</div>
+      <div class="value">2 Heróis</div>
+    </div>
+    <div class="info-box">
+      <div class="label">Duração estimada</div>
+      <div class="value">3–4 horas</div>
+    </div>
+    <div class="info-box">
+      <div class="label">Nível inicial</div>
+      <div class="value">Nível 1</div>
+    </div>
+    <div class="info-box">
+      <div class="label">Nível necessário para o Boss</div>
+      <div class="value">Nível 3</div>
+    </div>
+  </div>
+
+  <h3>Materiais Necessários</h3>
+  <ul>
+    <li>2d20, 2d12, 2d10, 2d8, 2d6, 2d4 (ou aplicativo de dados)</li>
+    <li>Fichas de personagem impressas (arquivo separado)</li>
+    <li>Mapa impresso ou digital</li>
+    <li>Lápis, borracha, marcadores de posição (moedas, tampinhas)</li>
+    <li>Papel para anotar XP, ouro e itens encontrados</li>
+    <li>1 vela real ou marcador de 18 turnos (opcional, para imersão)</li>
+  </ul>
+
+  <hr class="separator">
+
+  <!-- MECÂNICA DE EXPLORAÇÃO -->
+  <h2>🗺️ Explorando o Mapa</h2>
+  <p>O mapa representa as catacumbas. Cada sala é identificada por um número. Ao <strong>entrar em uma sala pela primeira vez</strong>, leia em voz alta sua descrição neste guia. Salas já visitadas não precisam ser relidas.</p>
+
+  <h3>Tipos de Conexão (Legenda do Mapa)</h3>
+  <table>
+    <tr><th>Símbolo</th><th>Tipo</th><th>Regra</th></tr>
+    <tr><td>Arco aberto</td><td>Passagem livre</td><td>Passa sem rolar</td></tr>
+    <tr><td>Grade (Portcullis)</td><td>Portão de ferro</td><td>Força DC 14 ou Thieves' Tools DC 12</td></tr>
+    <tr><td>Porta simples</td><td>Porta de madeira</td><td>Livre — pode estar travada (50%)</td></tr>
+    <tr><td>Porta trancada</td><td>Porta com cadeado</td><td>Thieves' Tools DC 13 ou chave</td></tr>
+    <tr><td>Porta armadilha</td><td>Porta com trapaceira</td><td>Percepção DC 13 para detectar</td></tr>
+    <tr><td>Porta secreta</td><td>Passagem oculta</td><td>Investigação DC 15 para encontrar</td></tr>
+    <tr><td>Escada Subindo</td><td>Nível acima</td><td>Saída / Início da aventura</td></tr>
+    <tr><td>Escada Descendo</td><td>Nível abaixo</td><td>Câmara do Boss (Sala 24)</td></tr>
+  </table>
+
+  <h3>Porta Trancada — Resolvendo</h3>
+  <div class="callout">
+    <strong>Regra:</strong> Se a porta estiver trancada e ninguém tiver a chave, tentativa com thieves' tools: role 1d20 + DEX mod. Se alguém tiver proficiência, adicione bônus. Falha por 5 ou mais = alarme sonoro (role na tabela de encontro aleatório da sala).
+  </div>
+
+  <hr class="separator">
+
+  <!-- MECÂNICA DE COMBATE SIMPLIFICADA -->
+  <h2>⚔️ Ordem do Combate</h2>
+
+  <h3>Passo a Passo de um Combate</h3>
+  <ol style="margin-left:20px; line-height:1.9; font-size:15px; color:var(--ink-mid);">
+    <li><strong>Iniciativa:</strong> Cada herói e cada grupo de monstros rola 1d20 + Modificador de DEX. Quem tirar mais age primeiro. Em empate, heróis têm prioridade.</li>
+    <li><strong>Turno do Herói:</strong> Mova-se até sua velocidade (em ft) E faça UMA ação (Atacar, Usar Item, Desengajar, etc.)</li>
+    <li><strong>Ação de Ataque:</strong> Role 1d20 + bônus de ataque. Se ≥ CA do inimigo: ACERTA. Role o dado de dano + modificador.</li>
+    <li><strong>Turno dos Monstros:</strong> Cada grupo age junto. Role ataque contra um herói (o DM aleatório rola 1d6: 1–3 = ataca Herói 1; 4–6 = Herói 2). Se a CA do herói for atingida, aplica o dano.</li>
+    <li><strong>Repita</strong> até todos os inimigos estarem derrotados ou os heróis fugirem.</li>
+  </ol>
+
+  <h3>As 3 Ações Disponíveis por Turno</h3>
+  <table>
+    <tr><th>Ação</th><th>O que faz</th><th>Rolagem</th></tr>
+    <tr><td><strong>⚔️ ATACAR</strong></td><td>Golpeia um inimigo com arma ou magia</td><td>1d20 + bônus vs CA</td></tr>
+    <tr><td><strong>🛡️ DESVIAR</strong></td><td>Foco total em defesa. Ataques contra você têm desvantagem até seu próximo turno</td><td>Nenhuma rolagem</td></tr>
+    <tr><td><strong>✨ ESPECIAL</strong></td><td>Usar habilidade de classe, feitiço, item ou ação de ajuda</td><td>Varia por habilidade</td></tr>
+  </table>
+
+  <h3>Ação de Ajuda (Cooperativo!)</h3>
+  <div class="callout">
+    <strong>Ajuda:</strong> Gaste sua ação para ajudar seu parceiro. O próximo ataque do parceiro contra um inimigo a 1,5m de você tem <strong>Vantagem</strong> (rola 2d20, usa o maior). Fundamental no modo cooperativo!
+  </div>
+
+  <h3>Vantagem e Desvantagem</h3>
+  <ul>
+    <li><strong>Vantagem:</strong> Role 2d20, use o MAIOR resultado</li>
+    <li><strong>Desvantagem:</strong> Role 2d20, use o MENOR resultado</li>
+    <li>Se houver ambas, cancela-se: role apenas 1d20</li>
+  </ul>
+
+  <h3>Crítico e Falha Crítica</h3>
+  <ul>
+    <li><strong>20 natural:</strong> Acerto Crítico! Role os dados de dano em DOBRO</li>
+    <li><strong>1 natural:</strong> Falha Crítica — erra automaticamente, sem importar bônus</li>
+  </ul>
+
+  <hr class="separator">
+
+  <!-- DESCANSO -->
+  <h2>😴 Descanso e Recuperação</h2>
+
+  <h3>Descanso Curto (1 hora)</h3>
+  <div class="callout">
+    <strong>Quando:</strong> Somente em sala <em>limpa</em> (sem monstros vivos). Role 1 Dado de Vida + modificador de CON e recupere esse tanto em PV. Cada herói pode usar até 2 Dados de Vida por Descanso Curto. Conta como 1 turno de jornada.
+  </div>
+
+  <h3>Descanso Longo (8 horas)</h3>
+  <div class="callout">
+    <strong>Quando:</strong> Somente em sala <strong>Segura</strong> (marcada no mapa com 🔵). Recupera TODOS os PV e metade dos Dados de Vida gastos. Slots de magia retornam. Conta como 3 turnos de jornada. Só pode ser feito 1 vez por aventura!
+  </div>
+
+  <h3>Poções</h3>
+  <div class="callout">
+    <strong>Poção de Cura:</strong> Ação ou Ação Bônus. Recupera 2d4+2 PV. Pode ser usada em você mesmo ou em aliado adjacente.
+  </div>
+
+  <hr class="separator">
+
+  <!-- SISTEMA DE XP E NÍVEL -->
+  <h2>⭐ Sistema de Progressão</h2>
+  <p>Cada herói ganha XP individualmente. O nível sobe imediatamente quando o limiar é atingido. <strong>Explore o mapa</strong> — lutar apenas no corredor central não será suficiente para chegar ao Nível 3!</p>
+
+  <div class="xp-track">
+    <div class="xp-node"><div class="lvl">Nível 1</div><div class="xp-val">0 XP</div></div>
+    <div class="xp-arrow">→</div>
+    <div class="xp-node"><div class="lvl">Nível 2</div><div class="xp-val">300 XP</div></div>
+    <div class="xp-arrow">→</div>
+    <div class="xp-node"><div class="lvl">Nível 3</div><div class="xp-val">900 XP</div></div>
+    <div class="xp-arrow">→</div>
+    <div class="xp-node"><div class="lvl">BOSS</div><div class="xp-val">Nível 3+</div></div>
+  </div>
+
+  <h3>Fontes de XP</h3>
+  <table>
+    <tr><th>Fonte</th><th>XP</th></tr>
+    <tr><td>Monstro morto (fraco: esqueletos, morcegos)</td><td>25 XP cada</td></tr>
+    <tr><td>Monstro morto (médio: ghouls, lobos)</td><td>50 XP cada</td></tr>
+    <tr><td>Monstro morto (forte: vampiro menor, golem)</td><td>100 XP cada</td></tr>
+    <tr><td>Armadilha desarmada (sem dano)</td><td>25 XP</td></tr>
+    <tr><td>Sala nova explorada</td><td>10 XP</td></tr>
+    <tr><td>Sala com tesouro encontrado e coletado</td><td>25 XP</td></tr>
+    <tr><td>Puzzle resolvido</td><td>50 XP</td></tr>
+    <tr><td>NPC ajudado</td><td>30 XP</td></tr>
+  </table>
+
+  <h3>O que muda ao Subir de Nível</h3>
+  <table>
+    <tr><th>Nível</th><th>PV Extras</th><th>Bônus de Proficiência</th><th>Benefício</th></tr>
+    <tr><td>2</td><td>+Dado de Vida + CON mod</td><td>+2</td><td>Nova habilidade de classe</td></tr>
+    <tr><td>3</td><td>+Dado de Vida + CON mod</td><td>+2</td><td>Subclasse desbloqueada + novo recurso</td></tr>
+  </table>
+
+  <div class="callout">
+    <strong>Subindo na hora certa:</strong> Ao atingir XP suficiente, suba de nível imediatamente — inclusive no meio de um corredor. Role o Dado de Vida e adicione CON mod aos seus PV máximos. Anote na ficha.
+  </div>
+
+  <hr class="separator">
+
+  <!-- LIMITE DE CARGA -->
+  <h2>🎒 Limite de Carga (Peso)</h2>
+  <p>Cada herói pode carregar até <strong>FOR × 15 libras</strong>. Um personagem com FOR 10 carrega até 150 lb. Exceder isso reduz velocidade a 0.</p>
+
+  <table>
+    <tr><th>Item</th><th>Peso</th></tr>
+    <tr><td>Arma leve (adaga, faca)</td><td>1 lb</td></tr>
+    <tr><td>Arma média (espada longa, machado)</td><td>3–4 lb</td></tr>
+    <tr><td>Arma pesada (grande machado, maça de guerra)</td><td>7–10 lb</td></tr>
+    <tr><td>Armadura leve (couro)</td><td>10 lb</td></tr>
+    <tr><td>Armadura média (cota de escamas)</td><td>45 lb</td></tr>
+    <tr><td>Armadura pesada (cota de malha)</td><td>55 lb</td></tr>
+    <tr><td>Escudo</td><td>6 lb</td></tr>
+    <tr><td>Poção</td><td>0.5 lb</td></tr>
+    <tr><td>Moedas (50 = 1 lb)</td><td>variável</td></tr>
+    <tr><td>Mochila</td><td>5 lb</td></tr>
+    <tr><td>Tocha</td><td>1 lb</td></tr>
+    <tr><td>Rações (1 dia)</td><td>2 lb</td></tr>
+  </table>
+
+  <div class="callout">
+    <strong>Dica:</strong> Deixe itens pesados que não usa em uma sala segura e volte buscá-los. O ouro pode ser deixado para pegar na volta!
+  </div>
+
+  <hr class="separator">
+
+  <!-- SALAS DA DUNGEON -->
+  <h2>🏰 Descrição das Salas</h2>
+  <p>Ao entrar em uma sala pela primeira vez, leia a descrição em voz alta. Cada sala tem um tipo indicado por etiquetas coloridas.</p>
+
+  <!-- EIXO NORTE / ENTRADA -->
+  <h3>Zona 1: Entrada e Corredores Superiores</h3>
+
+  <div class="room-block">
+    <div class="room-header">
+      <div class="room-number">E</div>
+      <div class="room-title">Entrada — Escada de Pedra</div>
+    </div>
+    <div class="room-body">
+      <span class="room-tag tag-safe">🔵 Segura</span>
+      <p>A escada desce por pedras úmidas e musgosas. Um corredor se abre à frente, cheirando a terra e sangue seco. Há uma tocha apagada na parede e marcas de garras no chão de argila. Essa é a última lembrança de segurança que vocês terão.</p>
+      <div class="callout"><strong>Início:</strong> Cada herói começa com 1 Poção de Cura. Anote na ficha. Possível Descanso Longo aqui (única chance antes do boss).</div>
+    </div>
+  </div>
+
+  <div class="room-block">
+    <div class="room-header">
+      <div class="room-number">1</div>
+      <div class="room-title">Câmara das Tochas Negras</div>
+    </div>
+    <div class="room-body">
+      <span class="room-tag tag-combat">⚔️ Combate</span>
+      <span class="room-tag tag-loot">💰 Loot</span>
+      <p>Quatro tochas de chama negra iluminam um salão retangular. Nas sombras, dois <strong>Esqueletos Guerreiros</strong> "guardam" um baú enferrujado encostado à parede norte.</p>
+      <div class="callout">
+        <strong>Encontro:</strong> 2× Esqueleto Guerreiro<br>
+        <strong>Loot no baú:</strong> 15 po + 1 Poção de Cura + Adaga Prateada (+1 contra mortos-vivos, 1 lb)<br>
+        <strong>XP por sala:</strong> 60 XP (monstros) + 25 XP (tesouro) + 10 XP (sala)
+      </div>
+    </div>
+  </div>
+
+  <div class="room-block">
+    <div class="room-header">
+      <div class="room-number">2</div>
+      <div class="room-title">Câmara Circular — Pilar Central</div>
+    </div>
+    <div class="room-body">
+      <span class="room-tag tag-trap">⚠️ Armadilha</span>
+      <p>Uma câmara circular com um pilar de pedra no centro. No chão, há uma grade de drenagem. A sala parece vazia, mas o piso range ao ser pisado.</p>
+      <div class="callout">
+        <strong>Armadilha — Piso Falso:</strong> Percepção DC 13 para notar. Se falhar e pisar na área central: Destreza saving throw DC 12 ou cai em vala de 3m (1d6 dano contuso). A vala tem uma <strong>Chave de Ferro</strong> no fundo (abre a Sala 8).<br>
+        <strong>XP:</strong> 25 XP se desarmada sem dano + 10 XP sala
+      </div>
+    </div>
+  </div>
+
+  <div class="room-block">
+    <div class="room-header">
+      <div class="room-number">3</div>
+      <div class="room-title">Câmara das Correntes</div>
+    </div>
+    <div class="room-body">
+      <span class="room-tag tag-combat">⚔️ Combate</span>
+      <p>Correntes enferrujadas pendem do teto. Um <strong>Ghoul</strong> mastigando ossos para abruptamente quando os heróis entram. Há grafites nas paredes em língua infernal: "Aqui passa quem serve ao Conde".</p>
+      <div class="callout">
+        <strong>Encontro:</strong> 1× Ghoul<br>
+        <strong>Loot:</strong> Saco com 8 po + Poção de Resistência ao Frio (dura 1 hora)<br>
+        <strong>XP:</strong> 50 XP (ghoul) + 10 XP sala
+      </div>
+    </div>
+  </div>
+
+  <!-- ZONA LESTE -->
+  <h3>Zona 2: Ala Leste — Os Salões da Trevas</h3>
+
+  <div class="room-block">
+    <div class="room-header">
+      <div class="room-number">4</div>
+      <div class="room-title">Biblioteca Podre</div>
+    </div>
+    <div class="room-body">
+      <span class="room-tag tag-loot">💰 Loot</span>
+      <span class="room-tag tag-npc">🟢 NPC</span>
+      <p>Prateleiras tomadas por livros apodrecidos. Um <strong>rato gigante</strong> foge ao ver vocês. Sentado em um canto, encurvado e amarrado com cordas mágicas, está um <strong>Mercador Errante</strong> — Aldric, o comerciante humano.</p>
+      <div class="callout">
+        <strong>Salvando Aldric:</strong> Força DC 10 ou Thieves' Tools DC 10 para soltar. Se salvo, ele fica aqui e vende itens. NPC não entra em combate.<br>
+        <strong>XP:</strong> 30 XP (ajuda) + 10 XP sala
+      </div>
+      <div class="merchant-block">
+        <div class="merchant-name">🧙 Aldric, o Mercador Errante — Sala 4</div>
+        <table>
+          <tr><th>Item</th><th>Preço</th><th>Peso</th></tr>
+          <tr><td>Poção de Cura (2d4+2 PV)</td><td>50 po</td><td>0.5 lb</td></tr>
+          <tr><td>Poção de Força (FOR +4 por 1 hora)</td><td>80 po</td><td>0.5 lb</td></tr>
+          <tr><td>Óleo Sagrado (próximo ataque +1d6 vs mortos-vivos)</td><td>30 po</td><td>1 lb</td></tr>
+          <tr><td>Tocha (2 unidades)</td><td>2 pc</td><td>1 lb cada</td></tr>
+          <tr><td>Corda de Seda 15m</td><td>10 po</td><td>5 lb</td></tr>
+          <tr><td>Antídoto</td><td>50 po</td><td>— </td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="room-block">
+    <div class="room-header">
+      <div class="room-number">5</div>
+      <div class="room-title">Sala dos Espelhos Escuros</div>
+    </div>
+    <div class="room-body">
+      <span class="room-tag tag-trap">⚠️ Armadilha</span>
+      <span class="room-tag tag-loot">💰 Loot</span>
+      <p>Cinco espelhos negros cobrem as paredes. Os reflexos parecem se mover ligeiramente diferentes dos heróis. Um dos espelhos tem um símbolo dourado no canto — é um espelho mágico de revelação.</p>
+      <div class="callout">
+        <strong>Puzzle — Espelho Revelador:</strong> Investigação DC 14 para notar o espelho real. Toque nele e role Sabedoria DC 12: sucesso revela a localização do Coração de Sangue no mapa (Sala 24); falha = 1d6 dano psíquico.<br>
+        <strong>Armadilha:</strong> Tocar em espelho errado = Medo (assustado por 1 minuto, Sabedoria DC 12 no final de cada turno para cancelar).<br>
+        <strong>Loot atrás do espelho real:</strong> Pergaminho de Magia Míssil (1 uso) + 20 po<br>
+        <strong>XP:</strong> 50 XP puzzle + 10 XP sala
+      </div>
+    </div>
+  </div>
+
+  <div class="room-block">
+    <div class="room-header">
+      <div class="room-number">6</div>
+      <div class="room-title">Câmara dos Lobos Sombrios</div>
+    </div>
+    <div class="room-body">
+      <span class="room-tag tag-combat">⚔️ Combate</span>
+      <p>Um aposento de pedra com ossos espalhados. Dois <strong>Lobos Sombrios</strong> farejam os restos de uma refeição. Eles param e revelam dentes ao ver os heróis.</p>
+      <div class="callout">
+        <strong>Encontro:</strong> 2× Lobo Sombrio<br>
+        <strong>Loot:</strong> Coleira de couro com runas — Coleira da Agilidade (+1 DEX saving throws, 0.5 lb)<br>
+        <strong>XP:</strong> 100 XP (lobos) + 10 XP sala
+      </div>
+    </div>
+  </div>
+
+  <div class="room-block">
+    <div class="room-header">
+      <div class="room-number">7</div>
+      <div class="room-title">Câmara Hexagonal</div>
+    </div>
+    <div class="room-body">
+      <span class="room-tag tag-combat">⚔️ Combate</span>
+      <span class="room-tag tag-loot">💰 Loot</span>
+      <p>Uma câmara de seis lados com runas gravadas no chão. Um <strong>Vampiro Menor</strong> (spawn) flutua no centro, olhos vermelhos brilhando. Há um nicho na parede com uma caixa de metal.</p>
+      <div class="callout">
+        <strong>Encontro:</strong> 1× Vampiro Menor<br>
+        <strong>Loot na caixa:</strong> Amuleto da Proteção (+1 CA, não empilha com escudo, 0.5 lb) + 40 po<br>
+        <strong>XP:</strong> 100 XP (vampiro) + 25 XP (tesouro) + 10 XP sala
+      </div>
+    </div>
+  </div>
+
+  <!-- ZONA OESTE -->
+  <h3>Zona 3: Ala Oeste — As Câmaras Proibidas</h3>
+
+  <div class="room-block">
+    <div class="room-header">
+      <div class="room-number">8</div>
+      <div class="room-title">Câmara Trancada — Depósito de Armas</div>
+    </div>
+    <div class="room-body">
+      <span class="room-tag tag-loot">💰 Loot</span>
+      <p>Porta trancada (chave da Sala 2 ou Thieves' Tools DC 13). Dentro: prateleiras com armas velhas mas funcionais e um baú reforçado com monograma do Conde.</p>
+      <div class="callout">
+        <strong>Loot:</strong> Espada Longa +1 (3 lb) + Escudo Reforçado (+3 CA em vez do normal +2, 6 lb) + 60 po + Pergaminho de Cura de Ferimentos<br>
+        <strong>XP:</strong> 25 XP (tesouro) + 10 XP sala
+      </div>
+    </div>
+  </div>
+
+  <div class="room-block">
+    <div class="room-header">
+      <div class="room-number">9</div>
+      <div class="room-title">Câmara do Alquimista Morto-Vivo</div>
+    </div>
+    <div class="room-body">
+      <span class="room-tag tag-npc">🟢 NPC</span>
+      <span class="room-tag tag-loot">💰 Loot</span>
+      <p>Uma câmara com mesas cobertas de frascos e alambiques borbulhando. Sentado em uma cadeira, um <strong>esqueleto com avental</strong> se levanta — mas não ataca. Fala com voz rangente: "Você... comprador? Eu vendo... eu sempre vendo..."</p>
+      <div class="callout">
+        <strong>Nota:</strong> O Alquimista Morto-Vivo é neutro e só se defende se atacado. Vende poções raras.
+      </div>
+      <div class="merchant-block">
+        <div class="merchant-name">💀 Mortuis, o Alquimista Morto-Vivo — Sala 9</div>
+        <table>
+          <tr><th>Item</th><th>Preço</th><th>Efeito</th><th>Peso</th></tr>
+          <tr><td>Poção de Cura Superior</td><td>120 po</td><td>4d4+4 PV</td><td>0.5 lb</td></tr>
+          <tr><td>Poção de Invisibilidade</td><td>200 po</td><td>Invisível por 1h ou até atacar</td><td>0.5 lb</td></tr>
+          <tr><td>Pó de Areia do Sono</td><td>60 po</td><td>Área 3m: CON DC 13 ou dorme 1 min</td><td>0.5 lb</td></tr>
+          <tr><td>Ácido Corrosivo (frasco)</td><td>25 po</td><td>2d6 ácido (arremesso 6m)</td><td>1 lb</td></tr>
+          <tr><td>Elixir de Resistência</td><td>100 po</td><td>Resistência a 1 tipo de dano por 1h</td><td>0.5 lb</td></tr>
+          <tr><td>Veneno de Contato</td><td>80 po</td><td>Aplica em arma: +1d6 veneno por 1h</td><td>0.5 lb</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="room-block">
+    <div class="room-header">
+      <div class="room-number">10</div>
+      <div class="room-title">Câmara da Névoa Sanguínea</div>
+    </div>
+    <div class="room-body">
+      <span class="room-tag tag-combat">⚔️ Combate</span>
+      <span class="room-tag tag-trap">⚠️ Armadilha</span>
+      <p>Uma névoa vermelha preenche a câmara. Mal é possível enxergar a 1,5m. Dois <strong>Morcegos Vampíricos Gigantes</strong> atacam de cima.</p>
+      <div class="callout">
+        <strong>Efeito da Névoa:</strong> Área levemente obscurecida — ataques à distância têm Desvantagem. Dura enquanto os morcegos vivem (eles a conjuram).<br>
+        <strong>Encontro:</strong> 2× Morcego Vampírico Gigante<br>
+        <strong>Loot:</strong> 20 po escondidos em um nicho no teto (Percepção DC 14 para achar)<br>
+        <strong>XP:</strong> 50 XP (monstros) + 10 XP sala
+      </div>
+    </div>
+  </div>
+
+  <!-- ZONA CENTRAL -->
+  <h3>Zona 4: Centro — A Câmara do Trono</h3>
+
+  <div class="room-block">
+    <div class="room-header">
+      <div class="room-number">11</div>
+      <div class="room-title">Câmara do Trono Vazio</div>
+    </div>
+    <div class="room-body">
+      <span class="room-tag tag-safe">🔵 Relativamente Segura</span>
+      <span class="room-tag tag-loot">💰 Loot</span>
+      <p>Um grande salão com um trono de ébano vazio num estrado. Tapetes esfarrapados cobrem o chão de pedra. Há um diário encadernado em couro negro sobre o assento do trono.</p>
+      <div class="callout">
+        <strong>Diário do Conde:</strong> Investigação DC 11 para ler as páginas relevantes. Revela: "O Coração de Sangue só pode ser destruído por um golpe com arma de prata ou luz sagrada..."<br>
+        <strong>Embaixo do trono:</strong> Percepção DC 12 — esconderijo com 80 po + Anel de Proteção Menor (+1 saving throws, 0 lb)<br>
+        <strong>XP:</strong> 50 XP (puzzle/descoberta) + 25 XP (tesouro) + 10 XP sala
+      </div>
+    </div>
+  </div>
+
+  <div class="room-block">
+    <div class="room-header">
+      <div class="room-number">12</div>
+      <div class="room-title">Câmara da Fonte de Sangue</div>
+    </div>
+    <div class="room-body">
+      <span class="room-tag tag-combat">⚔️ Combate</span>
+      <span class="room-tag tag-trap">⚠️ Armadilha</span>
+      <p>Uma fonte de pedra com líquido escarlate borbulhante ocupa o centro. Um <strong>Golem de Ossos</strong> emerge de um alcove quando alguém toca a fonte.</p>
+      <div class="callout">
+        <strong>A Fonte:</strong> Beber o líquido (CON DC 13): Sucesso = recupera 1d6 PV. Falha = envenenado por 1 hora (desvantagem em ataques e saving throws).<br>
+        <strong>Encontro:</strong> 1× Golem de Ossos<br>
+        <strong>Loot:</strong> Dentro da fonte (após drenar com Investigação DC 12): Chave Prateada (abre Sala 20) + 30 po<br>
+        <strong>XP:</strong> 100 XP (golem) + 25 XP (tesouro) + 10 XP sala
+      </div>
+    </div>
+  </div>
+
+  <!-- ZONAS INFERIORES -->
+  <h3>Zona 5: Nível Inferior — Antecâmaras do Boss</h3>
+
+  <div class="room-block">
+    <div class="room-header">
+      <div class="room-number">13–19</div>
+      <div class="room-title">Corredores e Câmaras de Transição</div>
+    </div>
+    <div class="room-body">
+      <span class="room-tag tag-combat">⚔️ Combate variável</span>
+      <p>Estas câmaras de conexão contêm encontros menores que dão XP valioso para atingir o Nível 3. Role 1d6 ao entrar em cada uma: 1–2 = vazia; 3–4 = 1d4 Esqueletos (25 XP cada); 5 = 1 Ghoul (50 XP); 6 = Armadilha (veja tabela abaixo).</p>
+      <div class="callout">
+        <strong>Tabela de Armadilhas Aleatórias:</strong><br>
+        1 — Dardos envenenados: DEX DC 12 ou 1d6 + Veneno (CON DC 11 ou -2 DEX por 1h)<br>
+        2 — Teto desabando: DEX DC 13 ou 2d6 contuso<br>
+        3 — Névoa paralisante: CON DC 12 ou Paralisado 1 rodada
+      </div>
+    </div>
+  </div>
+
+  <div class="room-block">
+    <div class="room-header">
+      <div class="room-number">20</div>
+      <div class="room-title">Câmara do Guardião Final</div>
+    </div>
+    <div class="room-body">
+      <span class="room-tag tag-combat">⚔️ Combate</span>
+      <span class="room-tag tag-loot">💰 Loot</span>
+      <p>Porta trancada (chave da Sala 12 ou Thieves' Tools DC 15). Além dela: uma enorme câmara com um <strong>Vampiro Capitão</strong> ladeado por dois esqueletos. Este é o teste final antes do boss.</p>
+      <div class="callout">
+        <strong>Encontro:</strong> 1× Vampiro Capitão + 2× Esqueleto<br>
+        <strong>Loot:</strong> Capa do Vampiro (DEX + 1 quando não usa armadura pesada) + 100 po + Poção de Cura Superior<br>
+        <strong>XP:</strong> 150 XP + 50 XP + 10 XP sala — se ainda não chegou ao Nível 3, chegará aqui!
+      </div>
+    </div>
+  </div>
+
+  <!-- BOSS -->
+  <div class="room-block" style="border-color: var(--blood); border-width: 3px;">
+    <div class="room-header" style="background: #2a0005;">
+      <div class="room-number">24</div>
+      <div class="room-title">Câmara do Coração de Sangue — BOSS</div>
+    </div>
+    <div class="room-body">
+      <span class="room-tag tag-boss">💀 BOSS FINAL</span>
+      <p>A câmara final. Um caixão de obsidiana no centro emite uma luz pulsante vermelha. Sobre um altar de pedra negra, o <strong>Coração de Sangue</strong> bate como um coração vivo. O Conde Malachar não está aqui — ainda. Mas o Coração chama seus servos.</p>
+      <div class="callout">
+        <strong>Fase 1 — O Ritual:</strong> 2× Vampiro Menor guardam o Coração. Enquanto vivos, o Coração não pode ser destruído.<br>
+        <strong>Fase 2 — O Despertar:</strong> Ao matar um vampiro, o Caixão treme. O Conde Malachar (Vampiro Ancião) começa a despertar — ele age no turno 3 do combate se não o destruírem antes!<br>
+        <strong>Destruindo o Coração:</strong> Ataque com arma de prata OU feitiço sagrado. O Coração tem CA 10, 30 PV, sem saving throws. 1 ataque por rodada pode ser direcionado ao Coração.<br>
+        <strong>Vitória:</strong> Coração destruído = Conde Malachar dissolve em névoa, catacumbas entram em colapso lento. 10 rodadas para escapar!<br>
+        <strong>XP Boss:</strong> 500 XP cada herói
+      </div>
+    </div>
+  </div>
+
+  <hr class="separator">
+
+  <!-- FUGA -->
+  <h2>🏃 A Fuga Final</h2>
+  <p>Ao destruir o Coração de Sangue, as catacumbas começam a desmoronar. Os heróis têm <strong>10 rodadas</strong> para escapar pelo caminho que vieram até a Escada de Entrada. A cada rodada que ficarem parados, role 1d20: com 1–5, um bloco de pedra cai (DEX DC 12 ou 2d6 dano). Corram!</p>
+
+  <div class="ornament" style="margin-top: 40px;">⚔ FIM DA AVENTURA ⚔</div>
+  <p style="text-align:center; font-style:italic; margin-top: 12px; color: var(--stone);">Se ambos os heróis escaparem, a aventura é uma vitória completa. Se um escapar, vitória parcial. Se nenhum... os ossos deles se juntam aos demais.</p>
+
+</div>
+</body>
+</html>

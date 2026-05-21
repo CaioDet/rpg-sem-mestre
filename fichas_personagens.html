@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fichas de Personagem — Catacumbas do Conde Vampiro</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #1a0f05; font-family: 'Crimson Text', serif; }
+  .character-card {
+    max-width: 760px;
+    margin: 32px auto;
+    background: #f5ecd7;
+    border-radius: 4px;
+    overflow: hidden;
+    page-break-after: always;
+  }
+  .card-header {
+    padding: 20px 28px 16px;
+    color: #f5ecd7;
+  }
+  .card-header h1 {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 22px;
+    letter-spacing: 1px;
+  }
+  .card-header .class-tag {
+    font-family: 'Cinzel', serif;
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    opacity: 0.85;
+    margin-top: 4px;
+  }
+  .card-body { padding: 20px 28px; }
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 10px;
+    margin: 16px 0;
+  }
+  .stat-box {
+    background: #fff8ec;
+    border: 1.5px solid #c49a2a;
+    border-radius: 4px;
+    padding: 8px 6px;
+    text-align: center;
+  }
+  .stat-name {
+    font-family: 'Cinzel', serif;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #6b6055;
+    display: block;
+  }
+  .stat-val {
+    font-size: 24px;
+    font-weight: 700;
+    color: #1a0f00;
+    font-family: 'Cinzel', serif;
+    display: block;
+    line-height: 1.2;
+  }
+  .stat-mod {
+    font-size: 13px;
+    color: #7a0c12;
+    font-weight: 600;
+    display: block;
+    font-family: 'Cinzel', serif;
+  }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin: 12px 0; }
+  .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin: 12px 0; }
+  .info-block {
+    background: #fff8ec;
+    border: 1px solid #e8d8b8;
+    border-radius: 4px;
+    padding: 10px 12px;
+  }
+  .info-block .label {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #6b6055;
+    margin-bottom: 2px;
+  }
+  .info-block .val {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1a0f00;
+    font-family: 'Cinzel', serif;
+  }
+  .info-block .val-sm { font-size: 14px; font-weight: 600; color: #3d2b10; }
+  h3 {
+    font-family: 'Cinzel', serif;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #7a0c12;
+    border-bottom: 1px solid #c49a2a;
+    padding-bottom: 4px;
+    margin: 16px 0 8px;
+  }
+  .ability-list { list-style: none; }
+  .ability-list li {
+    font-size: 14px;
+    color: #3d2b10;
+    padding: 5px 0;
+    border-bottom: 0.5px solid #e8d8b8;
+    line-height: 1.5;
+  }
+  .ability-list li strong { color: #7a0c12; font-family: 'Cinzel', serif; font-size: 12px; }
+  .equipment-list { list-style: none; }
+  .equipment-list li {
+    font-size: 14px;
+    color: #3d2b10;
+    padding: 4px 0;
+    border-bottom: 0.5px solid #e8d8b8;
+    display: flex;
+    justify-content: space-between;
+  }
+  .weight-tag { font-size: 12px; color: #8b6914; }
+  .hp-box {
+    background: #7a0c12;
+    color: #f5ecd7;
+    border-radius: 4px;
+    padding: 12px 16px;
+    text-align: center;
+  }
+  .hp-box .label { font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: 2px; opacity: 0.8; }
+  .hp-box .val { font-size: 32px; font-weight: 700; font-family: 'Cinzel Decorative', serif; }
+  .hit-dice-box {
+    background: #3d2b10;
+    color: #f5ecd7;
+    border-radius: 4px;
+    padding: 10px 14px;
+    text-align: center;
+  }
+  .hit-dice-box .label { font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: 2px; opacity: 0.8; }
+  .hit-dice-box .val { font-size: 20px; font-weight: 700; font-family: 'Cinzel', serif; }
+  .spells-block {
+    background: #fff8ec;
+    border: 1.5px solid #7a0c12;
+    border-radius: 4px;
+    padding: 12px;
+    margin: 10px 0;
+  }
+  .spell-row { display: flex; justify-content: space-between; align-items: center; padding: 3px 0; border-bottom: 0.5px solid #e8d8b8; font-size: 13px; color: #3d2b10; }
+  .spell-row .sp-name { font-weight: 600; }
+  .spell-row .sp-detail { font-size: 12px; color: #6b6055; }
+  .checkbox-row { display: flex; gap: 8px; flex-wrap: wrap; margin: 4px 0; }
+  .cb { width: 18px; height: 18px; border: 1.5px solid #7a0c12; border-radius: 2px; display: inline-flex; align-items: center; justify-content: center; font-size: 12px; color: #7a0c12; cursor: pointer; }
+  .prof-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
+  .prof-item { font-size: 13px; color: #3d2b10; padding: 3px 0; }
+  .prof-item .dot { width: 10px; height: 10px; border-radius: 50%; border: 1.5px solid #6b6055; display: inline-block; margin-right: 6px; vertical-align: middle; }
+  .prof-item .dot.filled { background: #7a0c12; border-color: #7a0c12; }
+  .section-divider { border: none; border-top: 2px double #c49a2a; margin: 20px 0; opacity: 0.6; }
+  .name-input {
+    background: transparent;
+    border: none;
+    border-bottom: 1.5px solid rgba(245,236,215,0.5);
+    color: #f5ecd7;
+    font-family: 'Cinzel', serif;
+    font-size: 14px;
+    padding: 4px 0;
+    width: 200px;
+    outline: none;
+  }
+  .name-input::placeholder { color: rgba(245,236,215,0.4); }
+  .carry-bar {
+    background: #e8d8b8;
+    border-radius: 10px;
+    height: 10px;
+    margin-top: 4px;
+  }
+  .carry-fill {
+    background: linear-gradient(90deg, #1e5020, #c49a2a);
+    height: 10px;
+    border-radius: 10px;
+  }
+  .trait-box {
+    background: rgba(122,12,18,0.06);
+    border-left: 3px solid #7a0c12;
+    padding: 8px 12px;
+    margin: 6px 0;
+    font-size: 14px;
+    color: #3d2b10;
+    line-height: 1.6;
+    font-style: italic;
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== GUERREIRO ===== -->
+<div class="character-card">
+  <div class="card-header" style="background: linear-gradient(135deg, #3d1a00, #7a3010);">
+    <h1>⚔️ Guerreiro</h1>
+    <div class="class-tag">Fighter · Nível 1 · Humano</div>
+    <input class="name-input" placeholder="Nome do Personagem..." style="margin-top: 8px;">
+  </div>
+  <div class="card-body">
+    <div class="stats-row">
+      <div class="stat-box"><span class="stat-name">FOR</span><span class="stat-val">16</span><span class="stat-mod">+3</span></div>
+      <div class="stat-box"><span class="stat-name">DES</span><span class="stat-val">13</span><span class="stat-mod">+1</span></div>
+      <div class="stat-box"><span class="stat-name">CON</span><span class="stat-val">15</span><span class="stat-mod">+2</span></div>
+      <div class="stat-box"><span class="stat-name">INT</span><span class="stat-val">10</span><span class="stat-mod">+0</span></div>
+      <div class="stat-box"><span class="stat-name">SAB</span><span class="stat-val">12</span><span class="stat-mod">+1</span></div>
+      <div class="stat-box"><span class="stat-name">CAR</span><span class="stat-val">9</span><span class="stat-mod">-1</span></div>
+    </div>
+
+    <div class="three-col">
+      <div class="hp-box">
+        <div class="label">Pontos de Vida</div>
+        <div class="val">12</div>
+        <div style="font-size:11px; opacity:0.7; margin-top:2px;">máx · atual: ___</div>
+      </div>
+      <div class="hit-dice-box">
+        <div class="label">Dado de Vida</div>
+        <div class="val">1d10</div>
+        <div style="font-size:11px; opacity:0.7;">usados: ___/1</div>
+      </div>
+      <div class="info-block">
+        <div class="label">Velocidade</div>
+        <div class="val">30 ft</div>
+      </div>
+    </div>
+
+    <div class="three-col">
+      <div class="info-block">
+        <div class="label">Classe de Armadura</div>
+        <div class="val">16</div>
+        <div class="val-sm" style="font-size:12px;">(cota de malha)</div>
+      </div>
+      <div class="info-block">
+        <div class="label">Bônus Proficiência</div>
+        <div class="val">+2</div>
+      </div>
+      <div class="info-block">
+        <div class="label">Iniciativa</div>
+        <div class="val">+1</div>
+        <div class="val-sm">(DES mod)</div>
+      </div>
+    </div>
+
+    <h3>Ataques</h3>
+    <table style="width:100%; border-collapse:collapse; font-size:14px;">
+      <tr style="background:#3d1a00; color:#f5ecd7;">
+        <th style="padding:6px 8px; font-family:'Cinzel',serif; font-size:11px; text-align:left;">Arma</th>
+        <th style="padding:6px 8px; font-family:'Cinzel',serif; font-size:11px;">Ataque</th>
+        <th style="padding:6px 8px; font-family:'Cinzel',serif; font-size:11px;">Dano</th>
+        <th style="padding:6px 8px; font-family:'Cinzel',serif; font-size:11px;">Tipo</th>
+      </tr>
+      <tr><td style="padding:5px 8px; border-bottom:0.5px solid #e8d8b8;">Espada Longa</td><td style="padding:5px 8px; text-align:center; border-bottom:0.5px solid #e8d8b8;">+5</td><td style="padding:5px 8px; text-align:center; border-bottom:0.5px solid #e8d8b8;">1d8+3</td><td style="padding:5px 8px; text-align:center; border-bottom:0.5px solid #e8d8b8;">Cortante</td></tr>
+      <tr><td style="padding:5px 8px; border-bottom:0.5px solid #e8d8b8;">Arco Longo</td><td style="padding:5px 8px; text-align:center; border-bottom:0.5px solid #e8d8b8;">+3</td><td style="padding:5px 8px; text-align:center; border-bottom:0.5px solid #e8d8b8;">1d8+1</td><td style="padding:5px 8px; text-align:center; border-bottom:0.5px solid #e8d8b8;">Perfurante</td></tr>
+      <tr><td style="padding:5px 8px;">Unarmed Strike</td><td style="padding:5px 8px; text-align:center;">+5</td><td style="padding:5px 8px; text-align:center;">1+3</td><td style="padding:5px 8px; text-align:center;">Contuso</td></tr>
+    </table>
+
+    <h3>Habilidades de Classe</h3>
+    <ul class="ability-list">
+      <li><strong>Estilo de Luta:</strong> Defesa — +1 CA quando usa armadura</li>
+      <li><strong>Segundo Fôlego (1/Descanso Curto):</strong> Ação Bônus: recupera 1d10 + 1 PV (nível)</li>
+      <li><strong>Surge de Ação (1/Descanso Curto):</strong> Ganhe uma ação extra neste turno</li>
+    </ul>
+
+    <h3>Proficiências — Saving Throws</h3>
+    <div class="prof-grid">
+      <div class="prof-item"><span class="dot filled"></span>Força: +5</div>
+      <div class="prof-item"><span class="dot filled"></span>Constituição: +4</div>
+      <div class="prof-item"><span class="dot"></span>Destreza: +1</div>
+      <div class="prof-item"><span class="dot"></span>Inteligência: +0</div>
+      <div class="prof-item"><span class="dot"></span>Sabedoria: +1</div>
+      <div class="prof-item"><span class="dot"></span>Carisma: -1</div>
+    </div>
+
+    <h3>Equipamento Inicial</h3>
+    <ul class="equipment-list">
+      <li><span>Cota de Malha</span><span class="weight-tag">55 lb</span></li>
+      <li><span>Escudo</span><span class="weight-tag">6 lb</span></li>
+      <li><span>Espada Longa</span><span class="weight-tag">3 lb</span></li>
+      <li><span>Arco Longo + 20 flechas</span><span class="weight-tag">3 lb</span></li>
+      <li><span>Mochila</span><span class="weight-tag">5 lb</span></li>
+      <li><span>Poção de Cura ×1</span><span class="weight-tag">0.5 lb</span></li>
+      <li><span>Ração (3 dias)</span><span class="weight-tag">6 lb</span></li>
+      <li><span>Tocha ×2</span><span class="weight-tag">2 lb</span></li>
+      <li><span>50 po iniciais</span><span class="weight-tag">1 lb</span></li>
+    </ul>
+    <div style="font-family:'Cinzel',serif; font-size:11px; color:#6b6055; margin-top:6px;">Peso total: ~82 lb / Capacidade máx: 240 lb (FOR 16 × 15)</div>
+    <div class="carry-bar"><div class="carry-fill" style="width:34%;"></div></div>
+
+    <h3>Notas / Itens Encontrados</h3>
+    <div style="border: 1px solid #e8d8b8; border-radius:4px; min-height:60px; padding:8px; font-size:13px; color:#6b6055;">_________________________<br>_________________________<br>XP: ___ / 300</div>
+  </div>
+</div>
+
+<!-- ===== CLÉRIGO ===== -->
+<div class="character-card">
+  <div class="card-header" style="background: linear-gradient(135deg, #0d2a0d, #1e5020);">
+    <h1>🙏 Clérigo</h1>
+    <div class="class-tag">Cleric · Domínio da Vida · Nível 1 · Elfo</div>
+    <input class="name-input" placeholder="Nome do Personagem...">
+  </div>
+  <div class="card-body">
+    <div class="stats-row">
+      <div class="stat-box"><span class="stat-name">FOR</span><span class="stat-val">10</span><span class="stat-mod">+0</span></div>
+      <div class="stat-box"><span class="stat-name">DES</span><span class="stat-val">12</span><span class="stat-mod">+1</span></div>
+      <div class="stat-box"><span class="stat-name">CON</span><span class="stat-val">13</span><span class="stat-mod">+1</span></div>
+      <div class="stat-box"><span class="stat-name">INT</span><span class="stat-val">14</span><span class="stat-mod">+2</span></div>
+      <div class="stat-box"><span class="stat-name">SAB</span><span class="stat-val">16</span><span class="stat-mod">+3</span></div>
+      <div class="stat-box"><span class="stat-name">CAR</span><span class="stat-val">13</span><span class="stat-mod">+1</span></div>
+    </div>
+
+    <div class="three-col">
+      <div class="hp-box">
+        <div class="label">Pontos de Vida</div>
+        <div class="val">9</div>
+        <div style="font-size:11px; opacity:0.7;">máx · atual: ___</div>
+      </div>
+      <div class="hit-dice-box">
+        <div class="label">Dado de Vida</div>
+        <div class="val">1d8</div>
+        <div style="font-size:11px; opacity:0.7;">usados: ___/1</div>
+      </div>
+      <div class="info-block">
+        <div class="label">Velocidade</div>
+        <div class="val">30 ft</div>
+      </div>
+    </div>
+
+    <div class="three-col">
+      <div class="info-block">
+        <div class="label">Classe de Armadura</div>
+        <div class="val">15</div>
+        <div class="val-sm">(escamas + escudo)</div>
+      </div>
+      <div class="info-block">
+        <div class="label">Bônus Proficiência</div>
+        <div class="val">+2</div>
+      </div>
+      <div class="info-block">
+        <div class="label">CD dos Feitiços</div>
+        <div class="val">13</div>
+        <div class="val-sm">Ataque: +5</div>
+      </div>
+    </div>
+
+    <h3>Ataques</h3>
+    <table style="width:100%; border-collapse:collapse; font-size:14px;">
+      <tr style="background:#1e5020; color:#f5ecd7;">
+        <th style="padding:6px 8px; font-family:'Cinzel',serif; font-size:11px; text-align:left;">Arma / Feitiço</th>
+        <th style="padding:6px 8px; font-family:'Cinzel',serif; font-size:11px;">Ataque</th>
+        <th style="padding:6px 8px; font-family:'Cinzel',serif; font-size:11px;">Dano</th>
+        <th style="padding:6px 8px; font-family:'Cinzel',serif; font-size:11px;">Tipo</th>
+      </tr>
+      <tr><td style="padding:5px 8px; border-bottom:0.5px solid #e8d8b8;">Maça</td><td style="padding:5px 8px; text-align:center; border-bottom:0.5px solid #e8d8b8;">+2</td><td style="padding:5px 8px; text-align:center; border-bottom:0.5px solid #e8d8b8;">1d6</td><td style="padding:5px 8px; text-align:center; border-bottom:0.5px solid #e8d8b8;">Contuso</td></tr>
+      <tr><td style="padding:5px 8px; border-bottom:0.5px solid #e8d8b8;">Sacred Flame (cantríp)</td><td style="padding:5px 8px; text-align:center; border-bottom:0.5px solid #e8d8b8;">SAB DC 13</td><td style="padding:5px 8px; text-align:center; border-bottom:0.5px solid #e8d8b8;">1d8 rad.</td><td style="padding:5px 8px; text-align:center; border-bottom:0.5px solid #e8d8b8;">Radiante</td></tr>
+      <tr><td style="padding:5px 8px;">Guiding Bolt (1°)</td><td style="padding:5px 8px; text-align:center;">+5</td><td style="padding:5px 8px; text-align:center;">4d6 rad.</td><td style="padding:5px 8px; text-align:center;">Radiante</td></tr>
+    </table>
+
+    <h3>Slots de Magia</h3>
+    <div style="display:flex; gap:16px; align-items:center; margin: 8px 0;">
+      <div><span style="font-family:'Cinzel',serif; font-size:11px; color:#6b6055;">1° Nível</span><div class="checkbox-row"><div class="cb">○</div><div class="cb">○</div></div></div>
+    </div>
+
+    <h3>Feitiços Preparados</h3>
+    <div class="spells-block">
+      <div class="spell-row"><span class="sp-name">Sacred Flame (cantríp)</span><span class="sp-detail">60ft · DEX DC 13 · 1d8 rad</span></div>
+      <div class="spell-row"><span class="sp-name">Thaumaturgy (cantríp)</span><span class="sp-detail">30ft · efeito menor</span></div>
+      <div class="spell-row"><span class="sp-name">Cure Wounds (1°)</span><span class="sp-detail">Toque · 1d8+3 PV · 1 slot</span></div>
+      <div class="spell-row"><span class="sp-name">Guiding Bolt (1°)</span><span class="sp-detail">120ft · +5 ataque · 4d6 rad · 1 slot</span></div>
+      <div class="spell-row"><span class="sp-name">Bless (1°)</span><span class="sp-detail">30ft · 3 alvos · +1d4 ataques/saves</span></div>
+      <div class="spell-row"><span class="sp-name">Shield of Faith (1°)</span><span class="sp-detail">Bônus · 60ft · +2 CA · Conc.</span></div>
+      <div class="spell-row"><span class="sp-name">Healing Word (1°)</span><span class="sp-detail">Ação Bônus · 60ft · 1d4+3 PV</span></div>
+    </div>
+
+    <h3>Habilidades de Classe</h3>
+    <ul class="ability-list">
+      <li><strong>Disciple of Life:</strong> Cura de Ferimentos cura +2+nível extra (3 no Nível 1)</li>
+      <li><strong>Turnar Mortos-Vivos (1/Descanso Curto):</strong> Ação + símbolo sagrado: mortos-vivos a 9m que falhem SAB DC 13 ficam apavorados por 1 minuto</li>
+      <li><strong>Preparar Feitiços:</strong> SAB mod + nível = 4 feitiços preparados</li>
+    </ul>
+
+    <h3>Equipamento Inicial</h3>
+    <ul class="equipment-list">
+      <li><span>Cota de Escamas</span><span class="weight-tag">45 lb</span></li>
+      <li><span>Escudo</span><span class="weight-tag">6 lb</span></li>
+      <li><span>Maça</span><span class="weight-tag">4 lb</span></li>
+      <li><span>Símbolo Sagrado</span><span class="weight-tag">1 lb</span></li>
+      <li><span>Mochila</span><span class="weight-tag">5 lb</span></li>
+      <li><span>Poção de Cura ×1</span><span class="weight-tag">0.5 lb</span></li>
+      <li><span>Ração (3 dias)</span><span class="weight-tag">6 lb</span></li>
+      <li><span>Vela ×5</span><span class="weight-tag">— lb</span></li>
+      <li><span>40 po iniciais</span><span class="weight-tag">0.8 lb</span></li>
+    </ul>
+    <div style="font-family:'Cinzel',serif; font-size:11px; color:#6b6055; margin-top:6px;">Peso total: ~68 lb / Capacidade máx: 150 lb (FOR 10 × 15)</div>
+    <div class="carry-bar"><div class="carry-fill" style="width:45%;"></div></div>
+    <div style="border: 1px solid #e8d8b8; border-radius:4px; min-height:60px; padding:8px; font-size:13px; color:#6b6055; margin-top:12px;">XP: ___ / 300 — Notas: _________________________</div>
+  </div>
+</div>
+
+<!-- ===== LADINO ===== -->
+<div class="character-card">
+  <div class="card-header" style="background: linear-gradient(135deg, #1a1a2e, #2d2d5e);">
+    <h1>🗡️ Ladino</h1>
+    <div class="class-tag">Rogue · Arquétipo Trapaceiro · Nível 1 · Halfling</div>
+    <input class="name-input" placeholder="Nome do Personagem...">
+  </div>
+  <div class="card-body">
+    <div class="stats-row">
+      <div class="stat-box"><span class="stat-name">FOR</span><span class="stat-val">8</span><span class="stat-mod">-1</span></div>
+      <div class="stat-box"><span class="stat-name">DES</span><span class="stat-val">17</span><span class="stat-mod">+3</span></div>
+      <div class="stat-box"><span class="stat-name">CON</span><span class="stat-val">12</span><span class="stat-mod">+1</span></div>
+      <div class="stat-box"><span class="stat-name">INT</span><span class="stat-val">14</span><span class="stat-mod">+2</span></div>
+      <div class="stat-box"><span class="stat-name">SAB</span><span class="stat-val">13</span><span class="stat-mod">+1</span></div>
+      <div class="stat-box"><span class="stat-name">CAR</span><span class="stat-val">12</span><span class="stat-mod">+1</span></div>
+    </div>
+
+    <div class="three-col">
+      <div class="hp-box"><div class="label">Pontos de Vida</div><div class="val">9</div><div style="font-size:11px;opacity:0.7;">máx · atual: ___</div></div>
+      <div class="hit-dice-box"><div class="label">Dado de Vida</div><div class="val">1d8</div><div style="font-size:11px;opacity:0.7;">usados: ___/1</div></div>
+      <div class="info-block"><div class="label">Velocidade</div><div class="val">25 ft</div><div class="val-sm">(Halfling)</div></div>
+    </div>
+
+    <div class="three-col">
+      <div class="info-block"><div class="label">CA (armadura leve)</div><div class="val">14</div><div class="val-sm">(11+3 DES)</div></div>
+      <div class="info-block"><div class="label">Bônus Proficiência</div><div class="val">+2</div></div>
+      <div class="info-block"><div class="label">Iniciativa</div><div class="val">+3</div></div>
+    </div>
+
+    <h3>Ataques</h3>
+    <table style="width:100%; border-collapse:collapse; font-size:14px;">
+      <tr style="background:#2d2d5e; color:#f5ecd7;">
+        <th style="padding:6px 8px; font-family:'Cinzel',serif; font-size:11px; text-align:left;">Arma</th>
+        <th style="padding:6px 8px; font-family:'Cinzel',serif; font-size:11px;">Ataque</th>
+        <th style="padding:6px 8px; font-family:'Cinzel',serif; font-size:11px;">Dano</th>
+        <th style="padding:6px 8px; font-family:'Cinzel',serif; font-size:11px;">Tipo</th>
+      </tr>
+      <tr><td style="padding:5px 8px; border-bottom:0.5px solid #e8d8b8;">Rapieira (Finesse)</td><td style="padding:5px 8px;text-align:center;border-bottom:0.5px solid #e8d8b8;">+5</td><td style="padding:5px 8px;text-align:center;border-bottom:0.5px solid #e8d8b8;">1d8+3</td><td style="padding:5px 8px;text-align:center;border-bottom:0.5px solid #e8d8b8;">Perfurante</td></tr>
+      <tr><td style="padding:5px 8px; border-bottom:0.5px solid #e8d8b8;">Adaga (Arremesso)</td><td style="padding:5px 8px;text-align:center;border-bottom:0.5px solid #e8d8b8;">+5</td><td style="padding:5px 8px;text-align:center;border-bottom:0.5px solid #e8d8b8;">1d4+3</td><td style="padding:5px 8px;text-align:center;border-bottom:0.5px solid #e8d8b8;">Perfurante</td></tr>
+      <tr><td style="padding:5px 8px;">Ataque Furtivo</td><td style="padding:5px 8px;text-align:center;">+5</td><td style="padding:5px 8px;text-align:center;">+1d6</td><td style="padding:5px 8px;text-align:center;">extra</td></tr>
+    </table>
+
+    <h3>Habilidades de Classe</h3>
+    <ul class="ability-list">
+      <li><strong>Ataque Furtivo (1d6):</strong> +1d6 de dano quando tem Vantagem OU aliado adjacente ao alvo, usando arma Finesse ou à distância. 1× por turno.</li>
+      <li><strong>Linguagem Ladrão:</strong> Comunicação secreta com outros ladrões</li>
+      <li><strong>Ação Ardilosa (Cunning Action):</strong> Ação Bônus: Dash, Desviar ou Esconder</li>
+    </ul>
+
+    <h3>Perícias com Especialização (2× bônus)</h3>
+    <div class="prof-grid">
+      <div class="prof-item"><span class="dot filled" style="background:#2d2d5e;border-color:#2d2d5e;"></span>Furtividade: +7</div>
+      <div class="prof-item"><span class="dot filled" style="background:#2d2d5e;border-color:#2d2d5e;"></span>Percepção: +5</div>
+      <div class="prof-item"><span class="dot filled" style="background:#2d2d5e;border-color:#2d2d5e;"></span>Prestidigitação: +7</div>
+      <div class="prof-item"><span class="dot filled" style="background:#2d2d5e;border-color:#2d2d5e;"></span>Ferramentas de Ladrão: +7</div>
+    </div>
+
+    <h3>Equipamento Inicial</h3>
+    <ul class="equipment-list">
+      <li><span>Armadura de Couro</span><span class="weight-tag">10 lb</span></li>
+      <li><span>Rapieira</span><span class="weight-tag">2 lb</span></li>
+      <li><span>Adaga ×2</span><span class="weight-tag">2 lb</span></li>
+      <li><span>Ferramentas de Ladrão</span><span class="weight-tag">1 lb</span></li>
+      <li><span>Mochila</span><span class="weight-tag">5 lb</span></li>
+      <li><span>Poção de Cura ×1</span><span class="weight-tag">0.5 lb</span></li>
+      <li><span>Corda de cânhamo 15m</span><span class="weight-tag">10 lb</span></li>
+      <li><span>35 po iniciais</span><span class="weight-tag">0.7 lb</span></li>
+    </ul>
+    <div style="font-family:'Cinzel',serif; font-size:11px; color:#6b6055; margin-top:6px;">Peso: ~31 lb / Capacidade: 120 lb (FOR 8 × 15)</div>
+    <div class="carry-bar"><div class="carry-fill" style="width:26%;"></div></div>
+    <div style="border: 1px solid #e8d8b8; border-radius:4px; min-height:60px; padding:8px; font-size:13px; color:#6b6055; margin-top:12px;">XP: ___ / 300 — Notas: _________________________</div>
+  </div>
+</div>
+
+<!-- ===== MAGO ===== -->
+<div class="character-card">
+  <div class="card-header" style="background: linear-gradient(135deg, #0a1a2a, #143c78);">
+    <h1>🔮 Mago</h1>
+    <div class="class-tag">Wizard · Escola de Evocação · Nível 1 · Humano</div>
+    <input class="name-input" placeholder="Nome do Personagem...">
+  </div>
+  <div class="card-body">
+    <div class="stats-row">
+      <div class="stat-box"><span class="stat-name">FOR</span><span class="stat-val">8</span><span class="stat-mod">-1</span></div>
+      <div class="stat-box"><span class="stat-name">DES</span><span class="stat-val">14</span><span class="stat-mod">+2</span></div>
+      <div class="stat-box"><span class="stat-name">CON</span><span class="stat-val">13</span><span class="stat-mod">+1</span></div>
+      <div class="stat-box"><span class="stat-name">INT</span><span class="stat-val">17</span><span class="stat-mod">+3</span></div>
+      <div class="stat-box"><span class="stat-name">SAB</span><span class="stat-val">12</span><span class="stat-mod">+1</span></div>
+      <div class="stat-box"><span class="stat-name">CAR</span><span class="stat-val">10</span><span class="stat-mod">+0</span></div>
+    </div>
+
+    <div class="three-col">
+      <div class="hp-box"><div class="label">Pontos de Vida</div><div class="val">7</div><div style="font-size:11px;opacity:0.7;">máx · atual: ___</div></div>
+      <div class="hit-dice-box"><div class="label">Dado de Vida</div><div class="val">1d6</div><div style="font-size:11px;opacity:0.7;">usados: ___/1</div></div>
+      <div class="info-block"><div class="label">Velocidade</div><div class="val">30 ft</div></div>
+    </div>
+
+    <div class="three-col">
+      <div class="info-block"><div class="label">CA</div><div class="val">12</div><div class="val-sm">(10+2 DES)</div></div>
+      <div class="info-block"><div class="label">CD Feitiços</div><div class="val">13</div></div>
+      <div class="info-block"><div class="label">Ataque Magia</div><div class="val">+5</div></div>
+    </div>
+
+    <h3>Slots de Magia</h3>
+    <div style="display:flex; gap:20px; margin:8px 0;">
+      <div><span style="font-family:'Cinzel',serif; font-size:11px; color:#6b6055;">1° Nível (2 slots)</span>
+        <div class="checkbox-row"><div class="cb">○</div><div class="cb">○</div></div>
+      </div>
+    </div>
+
+    <h3>Livro de Feitiços</h3>
+    <div class="spells-block">
+      <div class="spell-row"><span class="sp-name">Ray of Frost (cantríp)</span><span class="sp-detail">60ft · +5 · 1d8 frio · vel -3m</span></div>
+      <div class="spell-row"><span class="sp-name">Shocking Grasp (cantríp)</span><span class="sp-detail">Toque · +5 · 1d8 raio · sem reação</span></div>
+      <div class="spell-row"><span class="sp-name">Mage Hand (cantríp)</span><span class="sp-detail">30ft · mão etérea utilitária</span></div>
+      <div class="spell-row"><span class="sp-name">Magic Missile (1°)</span><span class="sp-detail">120ft · 3 dardos · 1d4+1 cada</span></div>
+      <div class="spell-row"><span class="sp-name">Burning Hands (1°)</span><span class="sp-detail">Cone 4,5m · DEX DC 13 · 3d6 fogo</span></div>
+      <div class="spell-row"><span class="sp-name">Thunderwave (1°)</span><span class="sp-detail">Cubo 4,5m · CON DC 13 · 2d8 + empurrão</span></div>
+      <div class="spell-row"><span class="sp-name">Shield (1°)</span><span class="sp-detail">Reação · +5 CA até próx. turno</span></div>
+      <div class="spell-row"><span class="sp-name">Mage Armor (1°)</span><span class="sp-detail">CA = 13+DES por 8h (sem armadura)</span></div>
+    </div>
+
+    <div class="trait-box">⚠️ DICA: Mago tem poucos PV. Fique atrás do Guerreiro. Use Mage Armor no início de toda sessão. Shield é sua linha de defesa de emergência!</div>
+
+    <h3>Equipamento Inicial</h3>
+    <ul class="equipment-list">
+      <li><span>Cajado Arcano</span><span class="weight-tag">4 lb</span></li>
+      <li><span>Livro de Feitiços</span><span class="weight-tag">3 lb</span></li>
+      <li><span>Bolsa de Componentes</span><span class="weight-tag">2 lb</span></li>
+      <li><span>Mochila</span><span class="weight-tag">5 lb</span></li>
+      <li><span>Poção de Cura ×1</span><span class="weight-tag">0.5 lb</span></li>
+      <li><span>Pergaminho de Detectar Magia</span><span class="weight-tag">—</span></li>
+      <li><span>30 po iniciais</span><span class="weight-tag">0.6 lb</span></li>
+    </ul>
+    <div style="font-family:'Cinzel',serif; font-size:11px; color:#6b6055; margin-top:6px;">Peso: ~15 lb / Capacidade: 120 lb (FOR 8 × 15)</div>
+    <div class="carry-bar"><div class="carry-fill" style="width:12%;"></div></div>
+    <div style="border: 1px solid #e8d8b8; border-radius:4px; min-height:60px; padding:8px; font-size:13px; color:#6b6055; margin-top:12px;">XP: ___ / 300 — Notas: _________________________</div>
+  </div>
+</div>
+
+</body>
+</html>

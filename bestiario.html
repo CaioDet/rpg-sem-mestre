@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bestiário — Catacumbas do Conde Vampiro</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0d0005; font-family: 'Crimson Text', serif; padding: 20px; }
+  .page-header {
+    max-width: 900px;
+    margin: 0 auto 32px;
+    text-align: center;
+    padding: 32px;
+    background: #f5ecd7;
+    border-top: 8px solid #7a0c12;
+    border-bottom: 3px double #7a0c12;
+  }
+  .page-header h1 { font-family: 'Cinzel Decorative', serif; font-size: 28px; color: #7a0c12; }
+  .page-header p { font-size: 15px; color: #6b6055; margin-top: 8px; font-style: italic; }
+  .monster-card {
+    max-width: 900px;
+    margin: 0 auto 24px;
+    background: #f5ecd7;
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1.5px solid #8b6914;
+  }
+  .monster-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 20px;
+    color: #f5ecd7;
+  }
+  .monster-name { font-family: 'Cinzel Decorative', serif; font-size: 20px; }
+  .monster-type { font-family: 'Cinzel', serif; font-size: 12px; opacity: 0.8; margin-top: 2px; }
+  .monster-xp {
+    background: rgba(245,236,215,0.2);
+    border: 1px solid rgba(245,236,215,0.4);
+    border-radius: 4px;
+    padding: 6px 12px;
+    text-align: center;
+  }
+  .monster-xp .xp-val { font-family: 'Cinzel Decorative', serif; font-size: 22px; }
+  .monster-xp .xp-label { font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: 2px; opacity: 0.8; }
+  .monster-body { padding: 16px 20px; }
+  .stat-strip {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 8px;
+    margin: 12px 0;
+    padding: 10px;
+    background: rgba(122,12,18,0.06);
+    border-radius: 4px;
+  }
+  .stat-cell { text-align: center; }
+  .stat-cell .sname { font-family: 'Cinzel', serif; font-size: 9px; text-transform: uppercase; letter-spacing: 1px; color: #6b6055; }
+  .stat-cell .sval { font-size: 18px; font-weight: 700; color: #1a0f00; font-family: 'Cinzel', serif; }
+  .stat-cell .smod { font-size: 12px; color: #7a0c12; }
+  .combat-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin: 10px 0;
+  }
+  .combat-box {
+    background: #fff8ec;
+    border: 1px solid #e8d8b8;
+    border-radius: 3px;
+    padding: 8px 10px;
+    text-align: center;
+  }
+  .combat-box .cl { font-family: 'Cinzel', serif; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: #6b6055; }
+  .combat-box .cv { font-size: 17px; font-weight: 700; color: #1a0f00; font-family: 'Cinzel', serif; }
+  h4 { font-family: 'Cinzel', serif; font-size: 12px; color: #7a0c12; text-transform: uppercase; letter-spacing: 1.5px; margin: 12px 0 6px; border-bottom: 0.5px solid #e8d8b8; padding-bottom: 3px; }
+  .action-list { list-style: none; }
+  .action-list li { font-size: 14px; color: #3d2b10; padding: 5px 0; border-bottom: 0.5px solid #f0e6cc; line-height: 1.55; }
+  .action-list li:last-child { border-bottom: none; }
+  .action-list li strong { color: #7a0c12; font-family: 'Cinzel', serif; font-size: 12px; }
+  .trait-box { background: rgba(122,12,18,0.07); border-left: 3px solid #7a0c12; padding: 8px 12px; margin: 8px 0; font-size: 14px; color: #3d2b10; line-height: 1.6; }
+  .tactics-box { background: rgba(30,80,30,0.07); border-left: 3px solid #1e5020; padding: 8px 12px; margin: 8px 0; font-size: 14px; color: #1a2f1a; line-height: 1.6; }
+  .difficulty-badge {
+    display: inline-block;
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 2px;
+    margin-left: 8px;
+  }
+  .diff-easy { background: rgba(30,80,30,0.15); color: #1e5020; border: 1px solid #1e5020; }
+  .diff-med { background: rgba(139,105,20,0.15); color: #8b6914; border: 1px solid #8b6914; }
+  .diff-hard { background: rgba(122,12,18,0.15); color: #7a0c12; border: 1px solid #7a0c12; }
+  .diff-boss { background: rgba(50,0,0,0.25); color: #500000; border: 1.5px solid #500000; font-weight: 700; }
+  .section-break { max-width: 900px; margin: 32px auto 24px; padding: 12px 20px; background: #7a0c12; color: #f5ecd7; font-family: 'Cinzel Decorative', serif; font-size: 16px; border-radius: 4px; text-align: center; letter-spacing: 2px; }
+  .two-col-attacks { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <h1>☠ Bestiário das Catacumbas ☠</h1>
+  <p>Todos os monstros encontrados nesta aventura, com estatísticas completas e táticas recomendadas</p>
+</div>
+
+<div class="section-break">⚔ Monstros Fracos — Nível 1</div>
+
+<!-- ESQUELETO -->
+<div class="monster-card">
+  <div class="monster-header" style="background: linear-gradient(135deg, #3d2b10, #6b5030);">
+    <div><div class="monster-name">💀 Esqueleto Guerreiro</div><div class="monster-type">Morto-Vivo · Médio · Caótico Mau</div></div>
+    <div class="monster-xp"><div class="monster-xp xp-val">25 XP</div><div class="monster-xp xp-label">por esqueleto</div></div>
+  </div>
+  <div class="monster-body">
+    <div class="combat-row">
+      <div class="combat-box"><div class="cl">PV</div><div class="cv">13</div><div style="font-size:11px;color:#6b6055;">(2d8+4)</div></div>
+      <div class="combat-box"><div class="cl">CA</div><div class="cv">13</div><div style="font-size:11px;color:#6b6055;">(armadura)</div></div>
+      <div class="combat-box"><div class="cl">Velocidade</div><div class="cv">30 ft</div></div>
+      <div class="combat-box"><div class="cl">CR</div><div class="cv">1/4</div></div>
+    </div>
+    <div class="stat-strip">
+      <div class="stat-cell"><div class="sname">FOR</div><div class="sval">10</div><div class="smod">+0</div></div>
+      <div class="stat-cell"><div class="sname">DES</div><div class="sval">14</div><div class="smod">+2</div></div>
+      <div class="stat-cell"><div class="sname">CON</div><div class="sval">15</div><div class="smod">+2</div></div>
+      <div class="stat-cell"><div class="sname">INT</div><div class="sval">6</div><div class="smod">-2</div></div>
+      <div class="stat-cell"><div class="sname">SAB</div><div class="sval">8</div><div class="smod">-1</div></div>
+      <div class="stat-cell"><div class="sname">CAR</div><div class="sval">5</div><div class="smod">-3</div></div>
+    </div>
+    <div class="trait-box"><strong>Vulnerabilidade:</strong> Dano contuso (maças, porretes, etc.) — dobra o dano recebido. <strong>Imunidades:</strong> Veneno, Exaustão, Envenenado, Exausto. <strong>Darkvision</strong> 18m.</div>
+    <h4>Ações</h4>
+    <ul class="action-list">
+      <li><strong>Espada Curta:</strong> Ataque corpo a corpo +4 para acertar, alcance 1,5m. Acerto: 5 (1d6+2) dano perfurante</li>
+      <li><strong>Arco Curto (se disponível):</strong> Ataque à distância +4, alcance 24/96m. Acerto: 5 (1d6+2) dano perfurante</li>
+    </ul>
+    <div class="tactics-box">🎯 <strong>Tática:</strong> Esqueletos atacam o herói mais próximo sem estratégia. Em grupos, um ataca corpo a corpo enquanto o outro usa arco. Não fujam — lutam até a destruição.</div>
+  </div>
+</div>
+
+<!-- MORCEGO VAMPÍRICO -->
+<div class="monster-card">
+  <div class="monster-header" style="background: linear-gradient(135deg, #1a0f00, #3d1a00);">
+    <div><div class="monster-name">🦇 Morcego Vampírico Gigante</div><div class="monster-type">Besta · Médio · Sem alinhamento</div></div>
+    <div class="monster-xp"><div class="xp-val">25 XP</div><div class="xp-label">por morcego</div></div>
+  </div>
+  <div class="monster-body">
+    <div class="combat-row">
+      <div class="combat-box"><div class="cl">PV</div><div class="cv">22</div><div style="font-size:11px;color:#6b6055;">(4d10)</div></div>
+      <div class="combat-box"><div class="cl">CA</div><div class="cv">13</div></div>
+      <div class="combat-box"><div class="cl">Velocidade</div><div class="cv">Voo 18m</div></div>
+      <div class="combat-box"><div class="cl">CR</div><div class="cv">1/4</div></div>
+    </div>
+    <div class="stat-strip">
+      <div class="stat-cell"><div class="sname">FOR</div><div class="sval">15</div><div class="smod">+2</div></div>
+      <div class="stat-cell"><div class="sname">DES</div><div class="sval">16</div><div class="smod">+3</div></div>
+      <div class="stat-cell"><div class="sname">CON</div><div class="sval">11</div><div class="smod">+0</div></div>
+      <div class="stat-cell"><div class="sname">INT</div><div class="sval">2</div><div class="smod">-4</div></div>
+      <div class="stat-cell"><div class="sname">SAB</div><div class="sval">12</div><div class="smod">+1</div></div>
+      <div class="stat-cell"><div class="sname">CAR</div><div class="sval">6</div><div class="smod">-2</div></div>
+    </div>
+    <div class="trait-box"><strong>Echolocation:</strong> Não pode usar Blindsight se Ensurdecido. <strong>Névoa Sanguínea (Especial):</strong> Enquanto 2 morcegos estiverem vivos na sala, toda a câmara é levemente obscurecida.</div>
+    <h4>Ações</h4>
+    <ul class="action-list">
+      <li><strong>Mordida (Sanguessuga):</strong> Ataque corpo a corpo +4, alcance 1,5m. Acerto: 5 (1d6+2) perfurante. O morcego recupera PV iguais ao dano causado.</li>
+    </ul>
+    <div class="tactics-box">🎯 <strong>Tática:</strong> Morcegos atacam heróis separados. Priorizam o herói com menos PV. Se atingirem 5 PV ou menos, tentam fugir para o teto.</div>
+  </div>
+</div>
+
+<div class="section-break">⚔ Monstros Médios — Nível 1-2</div>
+
+<!-- GHOUL -->
+<div class="monster-card">
+  <div class="monster-header" style="background: linear-gradient(135deg, #1a1a2e, #2d2d5e);">
+    <div><div class="monster-name">💀 Ghoul</div><div class="monster-type">Morto-Vivo · Médio · Caótico Mau</div></div>
+    <div class="monster-xp"><div class="xp-val">50 XP</div><div class="xp-label">por ghoul</div></div>
+  </div>
+  <div class="monster-body">
+    <div class="combat-row">
+      <div class="combat-box"><div class="cl">PV</div><div class="cv">22</div><div style="font-size:11px;color:#6b6055;">(5d8)</div></div>
+      <div class="combat-box"><div class="cl">CA</div><div class="cv">12</div></div>
+      <div class="combat-box"><div class="cl">Velocidade</div><div class="cv">30 ft</div></div>
+      <div class="combat-box"><div class="cl">CR</div><div class="cv">1</div></div>
+    </div>
+    <div class="stat-strip">
+      <div class="stat-cell"><div class="sname">FOR</div><div class="sval">13</div><div class="smod">+1</div></div>
+      <div class="stat-cell"><div class="sname">DES</div><div class="sval">15</div><div class="smod">+2</div></div>
+      <div class="stat-cell"><div class="sname">CON</div><div class="sval">10</div><div class="smod">+0</div></div>
+      <div class="stat-cell"><div class="sname">INT</div><div class="sval">7</div><div class="smod">-2</div></div>
+      <div class="stat-cell"><div class="sname">SAB</div><div class="sval">10</div><div class="smod">+0</div></div>
+      <div class="stat-cell"><div class="sname">CAR</div><div class="sval">6</div><div class="smod">-2</div></div>
+    </div>
+    <div class="trait-box"><strong>Imunidades:</strong> Envenenado, Encantado, Exausto. <strong>Darkvision</strong> 18m. <strong>Sentido de Carcaça:</strong> Sente criaturas mortas a 18m.</div>
+    <h4>Ações</h4>
+    <ul class="action-list">
+      <li><strong>Mordida:</strong> +2 ataque corpo a corpo. Acerto: 9 (2d6+2) perfurante.</li>
+      <li><strong>Garras Paralisantes:</strong> +4 ataque corpo a corpo. Acerto: 7 (2d4+2) cortante. Se o alvo não for Elfo, deve passar em CON DC 10 ou fica PARALISADO por 1 minuto. Repete ao final de cada turno. <span class="difficulty-badge diff-hard">PERIGO!</span></li>
+    </ul>
+    <div class="tactics-box">🎯 <strong>Tática:</strong> Ghoul usa Garras no primeiro ataque para paralizar. Se o alvo paralizar, usa Mordida com Vantagem nos turnos seguintes. Foca em um herói por vez.</div>
+  </div>
+</div>
+
+<!-- LOBO SOMBRIO -->
+<div class="monster-card">
+  <div class="monster-header" style="background: linear-gradient(135deg, #0d1a0d, #1a3a1a);">
+    <div><div class="monster-name">🐺 Lobo Sombrio</div><div class="monster-type">Besta Sombria · Médio · Neutro Mau</div></div>
+    <div class="monster-xp"><div class="xp-val">50 XP</div><div class="xp-label">por lobo</div></div>
+  </div>
+  <div class="monster-body">
+    <div class="combat-row">
+      <div class="combat-box"><div class="cl">PV</div><div class="cv">26</div><div style="font-size:11px;color:#6b6055;">(4d8+8)</div></div>
+      <div class="combat-box"><div class="cl">CA</div><div class="cv">13</div></div>
+      <div class="combat-box"><div class="cl">Velocidade</div><div class="cv">40 ft</div></div>
+      <div class="combat-box"><div class="cl">CR</div><div class="cv">1/2</div></div>
+    </div>
+    <div class="stat-strip">
+      <div class="stat-cell"><div class="sname">FOR</div><div class="sval">15</div><div class="smod">+2</div></div>
+      <div class="stat-cell"><div class="sname">DES</div><div class="sval">15</div><div class="smod">+2</div></div>
+      <div class="stat-cell"><div class="sname">CON</div><div class="sval">14</div><div class="smod">+2</div></div>
+      <div class="stat-cell"><div class="sname">INT</div><div class="sval">3</div><div class="smod">-4</div></div>
+      <div class="stat-cell"><div class="sname">SAB</div><div class="sval">12</div><div class="smod">+1</div></div>
+      <div class="stat-cell"><div class="sname">CAR</div><div class="sval">6</div><div class="smod">-2</div></div>
+    </div>
+    <div class="trait-box"><strong>Tática em Matilha:</strong> Vantagem em ataques se um aliado estiver adjacente ao alvo. <strong>Derrubar:</strong> Quando acerta, o alvo deve passar em FOR DC 13 ou cair PRONE. <strong>Darkvision</strong> 18m.</div>
+    <h4>Ações</h4>
+    <ul class="action-list">
+      <li><strong>Mordida Sombria:</strong> +4 ataque. Acerto: 7 (2d4+2) perfurante + Derrubar (FOR DC 13 ou prone).</li>
+    </ul>
+    <div class="tactics-box">🎯 <strong>Tática:</strong> Um lobo ataca pela frente, o outro circula para o flanco. Ambos tentam derrubam o herói — atacar um herói deitado tem vantagem. Prioridade: herói com menos PV.</div>
+  </div>
+</div>
+
+<div class="section-break">⚔ Monstros Fortes — Nível 2-3</div>
+
+<!-- VAMPIRO MENOR -->
+<div class="monster-card">
+  <div class="monster-header" style="background: linear-gradient(135deg, #3a0008, #7a0c12);">
+    <div><div class="monster-name">🧛 Vampiro Menor (Spawn)</div><div class="monster-type">Morto-Vivo · Médio · Neutro Mau</div></div>
+    <div class="monster-xp"><div class="xp-val">100 XP</div><div class="xp-label">por spawn</div></div>
+  </div>
+  <div class="monster-body">
+    <div class="combat-row">
+      <div class="combat-box"><div class="cl">PV</div><div class="cv">32</div><div style="font-size:11px;color:#6b6055;">(5d8+10)</div></div>
+      <div class="combat-box"><div class="cl">CA</div><div class="cv">13</div><div style="font-size:11px;color:#6b6055;">(natural)</div></div>
+      <div class="combat-box"><div class="cl">Velocidade</div><div class="cv">30ft · Esc. 20ft</div></div>
+      <div class="combat-box"><div class="cl">CR</div><div class="cv">2</div></div>
+    </div>
+    <div class="stat-strip">
+      <div class="stat-cell"><div class="sname">FOR</div><div class="sval">16</div><div class="smod">+3</div></div>
+      <div class="stat-cell"><div class="sname">DES</div><div class="sval">16</div><div class="smod">+3</div></div>
+      <div class="stat-cell"><div class="sname">CON</div><div class="sval">14</div><div class="smod">+2</div></div>
+      <div class="stat-cell"><div class="sname">INT</div><div class="sval">11</div><div class="smod">+0</div></div>
+      <div class="stat-cell"><div class="sname">SAB</div><div class="sval">10</div><div class="smod">+0</div></div>
+      <div class="stat-cell"><div class="sname">CAR</div><div class="sval">12</div><div class="smod">+1</div></div>
+    </div>
+    <div class="trait-box">
+      <strong>Regeneração:</strong> Recupera 10 PV no início de seu turno se tiver ≥1 PV. Para se ele recebeu dano radiante ou de água benta naquele turno.<br>
+      <strong>Fraquezas:</strong> Dano radiante/fogo impede regeneração. Luz solar ou água benta causa 20 dano por turno de exposição.<br>
+      <strong>Resistências:</strong> Necrótico. Imune: Charm, Exausto, Assustado.<br>
+      <strong>Escalada nas Paredes:</strong> Move-se em superfícies verticais sem rolagem.
+    </div>
+    <h4>Ações</h4>
+    <ul class="action-list">
+      <li><strong>Mordida Drenadora:</strong> +5 ataque, alcance 1,5m. Acerto: 6 (1d6+3) perfurante + 3 (1d6) necrótico. O vampiro recupera PV iguais ao dano necrótico causado. O alvo reduz seu PV máximo pelo dano necrótico até Descanso Longo.</li>
+      <li><strong>Garras:</strong> +5 ataque. Acerto: 6 (1d6+3) cortante. Se ambas as garras acertam no mesmo turno: o alvo é Agarrado (FOR ou DES DC 13 para escapar).</li>
+    </ul>
+    <div class="tactics-box">🎯 <strong>Tática:</strong> Usa Escalada para abordar heróis de cima. Morde o herói mais fraco primeiro. Se estiver com menos de 10 PV, recua para regenerar — os heróis devem persegui-lo ou ele voltará restaurado!</div>
+  </div>
+</div>
+
+<!-- GOLEM DE OSSOS -->
+<div class="monster-card">
+  <div class="monster-header" style="background: linear-gradient(135deg, #2a1a00, #4a3010);">
+    <div><div class="monster-name">🦴 Golem de Ossos</div><div class="monster-type">Construto · Grande · Neutro</div></div>
+    <div class="monster-xp"><div class="xp-val">100 XP</div><div class="xp-label">por golem</div></div>
+  </div>
+  <div class="monster-body">
+    <div class="combat-row">
+      <div class="combat-box"><div class="cl">PV</div><div class="cv">45</div><div style="font-size:11px;color:#6b6055;">(6d10+12)</div></div>
+      <div class="combat-box"><div class="cl">CA</div><div class="cv">15</div><div style="font-size:11px;color:#6b6055;">(natural)</div></div>
+      <div class="combat-box"><div class="cl">Velocidade</div><div class="cv">25 ft</div></div>
+      <div class="combat-box"><div class="cl">CR</div><div class="cv">2</div></div>
+    </div>
+    <div class="stat-strip">
+      <div class="stat-cell"><div class="sname">FOR</div><div class="sval">18</div><div class="smod">+4</div></div>
+      <div class="stat-cell"><div class="sname">DES</div><div class="sval">8</div><div class="smod">-1</div></div>
+      <div class="stat-cell"><div class="sname">CON</div><div class="sval">15</div><div class="smod">+2</div></div>
+      <div class="stat-cell"><div class="sname">INT</div><div class="sval">3</div><div class="smod">-4</div></div>
+      <div class="stat-cell"><div class="sname">SAB</div><div class="sval">8</div><div class="smod">-1</div></div>
+      <div class="stat-cell"><div class="sname">CAR</div><div class="sval">1</div><div class="smod">-5</div></div>
+    </div>
+    <div class="trait-box">
+      <strong>Imunidades de Dano:</strong> Veneno, Psíquico, Não-mágico cortante/contuso/perfurante (armadura normal não funciona!)<br>
+      <strong>Imunidades de Condição:</strong> Charm, Exausto, Medo, Paralisado, Petrificado, Envenenado<br>
+      <strong>Imortalidade Parcial:</strong> Não pode ser reduzido a 0 PV por um único ataque que cause menos de 10 de dano.
+    </div>
+    <h4>Ações</h4>
+    <ul class="action-list">
+      <li><strong>Multiataques:</strong> Faz 2 ataques por turno (Soco de Ossos OU Arremesso).</li>
+      <li><strong>Soco de Ossos:</strong> +6 ataque. Acerto: 11 (2d6+4) contuso. Se o alvo for Médio ou menor, deve passar em FOR DC 14 ou ser empurrado 3m e cair PRONE.</li>
+      <li><strong>Arremesso de Fragmentos (Recarrega em 5-6):</strong> Cone de 4,5m. DEX DC 13. Falha: 14 (4d6) perfurante. Sucesso: metade.</li>
+    </ul>
+    <div class="tactics-box">🎯 <strong>Tática:</strong> Lento mas devastador. Tenta empurrar heróis para cantos. Armas normais de aventureiro padrão causam dano reduzido — usem magia ou a espada +1! Feitiços funcionam normalmente.</div>
+  </div>
+</div>
+
+<div class="section-break">💀 Monstros de Nível 3 — Antecâmara e Boss</div>
+
+<!-- VAMPIRO CAPITÃO -->
+<div class="monster-card">
+  <div class="monster-header" style="background: linear-gradient(135deg, #500000, #8a0010);">
+    <div><div class="monster-name">🧛 Vampiro Capitão</div><div class="monster-type">Morto-Vivo · Médio · Leal Mau</div></div>
+    <div class="monster-xp"><div class="xp-val">150 XP</div><div class="xp-label">por capitão</div></div>
+  </div>
+  <div class="monster-body">
+    <div class="combat-row">
+      <div class="combat-box"><div class="cl">PV</div><div class="cv">52</div><div style="font-size:11px;color:#6b6055;">(8d8+16)</div></div>
+      <div class="combat-box"><div class="cl">CA</div><div class="cv">15</div><div style="font-size:11px;color:#6b6055;">(armadura)</div></div>
+      <div class="combat-box"><div class="cl">Velocidade</div><div class="cv">30ft · Esc.</div></div>
+      <div class="combat-box"><div class="cl">CR</div><div class="cv">3</div></div>
+    </div>
+    <div class="stat-strip">
+      <div class="stat-cell"><div class="sname">FOR</div><div class="sval">17</div><div class="smod">+3</div></div>
+      <div class="stat-cell"><div class="sname">DES</div><div class="sval">16</div><div class="smod">+3</div></div>
+      <div class="stat-cell"><div class="sname">CON</div><div class="sval">14</div><div class="smod">+2</div></div>
+      <div class="stat-cell"><div class="sname">INT</div><div class="sval">14</div><div class="smod">+2</div></div>
+      <div class="stat-cell"><div class="sname">SAB</div><div class="sval">12</div><div class="smod">+1</div></div>
+      <div class="stat-cell"><div class="sname">CAR</div><div class="sval">15</div><div class="smod">+2</div></div>
+    </div>
+    <div class="trait-box">
+      <strong>Regeneração 10:</strong> Como Vampiro Menor, mas também para com dano de fogo.<br>
+      <strong>Resistência Lendária (1/dia):</strong> Se falhar em saving throw, pode escolher passar.<br>
+      <strong>Hipnose de Olhar:</strong> Ação: Alvo a 9m faz SAB DC 13. Falha = Charmed por 1 rodada (não pode atacar o capitão).
+    </div>
+    <h4>Ações (2 por turno)</h4>
+    <ul class="action-list">
+      <li><strong>Espada de Sombra:</strong> +5 ataque, alcance 1,5m. Acerto: 8 (1d10+3) cortante + 3 (1d6) necrótico.</li>
+      <li><strong>Mordida:</strong> +5, alcance 1,5m. Acerto: 6 (1d6+3) perfurante + 7 (2d6) necrótico. Recupera esses PV.</li>
+      <li><strong>Comandar Esqueletos (Bônus):</strong> 1 esqueleto adjacente ataca imediatamente como reação.</li>
+    </ul>
+    <div class="tactics-box">🎯 <strong>Tática:</strong> Usa Hipnose no Clérigo (para impedir Turnar). Ataca o guerreiro com espada, morde o parceiro isolado. Recua se abaixo de 20 PV e tenta regenerar. Este é o combate mais difícil antes do boss!</div>
+  </div>
+</div>
+
+<!-- BOSS: CONDE MALACHAR -->
+<div class="monster-card" style="border: 3px solid #7a0c12;">
+  <div class="monster-header" style="background: linear-gradient(135deg, #0d0000, #500000, #0d0000); padding: 20px;">
+    <div>
+      <div class="monster-name" style="font-size: 24px;">👑 Conde Malachar</div>
+      <div class="monster-type" style="font-size: 14px;">Vampiro Ancião · Grande · Caótico Mau · BOSS</div>
+    </div>
+    <div class="monster-xp" style="text-align:center;">
+      <div style="font-family:'Cinzel Decorative',serif; font-size:26px; color:#f5ecd7;">500 XP</div>
+      <div style="font-family:'Cinzel',serif; font-size:10px; letter-spacing:2px; color:rgba(245,236,215,0.8);">por herói sobrevivente</div>
+    </div>
+  </div>
+  <div class="monster-body">
+    <div class="combat-row">
+      <div class="combat-box"><div class="cl">PV</div><div class="cv">80</div><div style="font-size:11px;color:#6b6055;">(10d10+30)</div></div>
+      <div class="combat-box"><div class="cl">CA</div><div class="cv">16</div><div style="font-size:11px;color:#6b6055;">(natural)</div></div>
+      <div class="combat-box"><div class="cl">Velocidade</div><div class="cv">30ft · Voo 20ft</div></div>
+      <div class="combat-box"><div class="cl">CR</div><div class="cv">5</div></div>
+    </div>
+    <div class="stat-strip">
+      <div class="stat-cell"><div class="sname">FOR</div><div class="sval">20</div><div class="smod">+5</div></div>
+      <div class="stat-cell"><div class="sname">DES</div><div class="sval">18</div><div class="smod">+4</div></div>
+      <div class="stat-cell"><div class="sname">CON</div><div class="sval">17</div><div class="smod">+3</div></div>
+      <div class="stat-cell"><div class="sname">INT</div><div class="sval">17</div><div class="smod">+3</div></div>
+      <div class="stat-cell"><div class="sname">SAB</div><div class="sval">15</div><div class="smod">+2</div></div>
+      <div class="stat-cell"><div class="sname">CAR</div><div class="sval">18</div><div class="smod">+4</div></div>
+    </div>
+    <div class="trait-box">
+      <strong>Regeneração 20:</strong> Recupera 20 PV no início do turno se ≥1 PV. Parado por dano radiante, fogo ou destruição do Coração de Sangue.<br>
+      <strong>Resistência Lendária (2/dia):</strong> Pode escolher passar em um saving throw falho.<br>
+      <strong>Forma de Névoa:</strong> Se reduzido a 0 PV com o Coração de Sangue intacto, torna-se névoa intangível por 1 hora e retorna com 40 PV. SÓ é derrotado permanentemente se o Coração for destruído.<br>
+      <strong>Imunidades:</strong> Encantado, Assustado. Resistência: Necrótico, não-mágico.
+    </div>
+    <h4>Ações Lendárias (3/rodada — age no final do turno de outros)</h4>
+    <ul class="action-list">
+      <li><strong>Mordida (Lendária, 1 ação):</strong> +7 ataque, alcance 1,5m. Acerto: 10 (1d10+5) perfurante + 10 (3d6) necrótico. Recupera esses PV.</li>
+      <li><strong>Forma Morcego (Lendária, 1 ação):</strong> Transforma-se em névoa e move-se até 9m sem provocar ataques de oportunidade.</li>
+      <li><strong>Hipnose Anciã (Lendária, 2 ações):</strong> Um alvo a 9m faz SAB DC 15. Falha: Charmed por 1 rodada — o alvo usa sua ação para se aproximar do Conde.</li>
+    </ul>
+    <h4>Ações Normais (1 por turno)</h4>
+    <ul class="action-list">
+      <li><strong>Multiataques:</strong> Faz 3 ataques: 2 com Garra + 1 com Mordida.</li>
+      <li><strong>Garra:</strong> +7 ataque. Acerto: 8 (1d6+5) cortante. Em acerto crítico: o alvo sangra, perdendo 2 PV no início de cada turno até Medicina DC 10 ou cura.</li>
+      <li><strong>Grito do Conde (Recarrega em 5-6):</strong> Todos a 9m fazem SAB DC 14 ou ficam Assustados por 1 minuto (desvantagem em ataques, não pode se aproximar do Conde).</li>
+    </ul>
+    <div class="tactics-box">
+      🎯 <strong>Tática do Conde:</strong><br>
+      <strong>Turno 1:</strong> Grito do Conde para assustar os heróis.<br>
+      <strong>Turno 2-3:</strong> Hipnose no Clérigo, ataques triplos no Guerreiro.<br>
+      <strong>Turno 4+:</strong> Se com menos de 30 PV, prioriza Mordida para regenerar.<br><br>
+      <strong>Fraqueza chave:</strong> Dano radiante (feitiços do Clérigo) impede regeneração. Com o Coração destruído, ele não pode usar Forma de Névoa!<br><br>
+      <strong>Vitória dos heróis:</strong> Destruir o Coração de Sangue (30 PV, CA 10, Altar central) enquanto matam os Vampiros Menores. Com o Coração destruído, o Conde perde Regeneração e Forma de Névoa.
+    </div>
+  </div>
+</div>
+
+<div style="max-width:900px; margin: 0 auto 40px; background:#f5ecd7; padding:20px; border-top: 3px double #7a0c12; text-align:center;">
+  <p style="font-family:'Cinzel',serif; font-size:12px; color:#6b6055; letter-spacing:2px;">BESTIÁRIO COMPLETO · CATACUMBAS DO CONDE VAMPIRO · 2 JOGADORES</p>
+</div>
+
+</body>
+</html>
